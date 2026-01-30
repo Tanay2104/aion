@@ -7,7 +7,41 @@
  * symbol_table smbt
  * smbt.analyse(ast)
  * nfa = automata::glushkov(ast, syms)
- * codgen.cpp_emit(nfa, args.output_path)
+ * codegen.cpp_emit(nfa, args.output_path)
  */
+import aion.utils;
+import aion.core;
+import std;
 
-int main() {}
+int main(int argc, char** argv) {
+  /*
+   * Allowed options are:
+   * -o OUTPUT_FILE
+   * -march [native, AVX2, AVX512, SSE, NEON]
+   * -O O0/O1/O2/O3
+   * -h, --help
+   * -v, --version
+   * --verbose
+   * --emit <ir> (tokens, ast, nfa)
+   */
+  using namespace aion;
+
+  if (argc < 2) {
+    std::print("Usage: ./aionc <filename> [options]\nSee ./aionc --help for more details\n");
+    return 1;
+  }
+  core::Options options = utils::argparse(argc, argv);
+
+  core::CompilationContext compilation_context;
+  // Hopefully compiler will auto-generate apt move constructor.
+  compilation_context.options = std::move(options);
+  // Other fields are default constructed.
+
+  std::ifstream input_file(argv[1]);
+  if (!input_file) {
+    std::println("Error opening input file: {}", argv[1]);
+    return 1;
+  }
+  std::string program((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+  std::println("Compiling file:\n {}", program);
+}

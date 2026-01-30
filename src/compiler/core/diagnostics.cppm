@@ -3,3 +3,9 @@
  * Keeping it simple right now
  */
 export module aion.core:diagnostics;
+
+export namespace aion {
+  namespace core {
+    class Diagnostics {};
+  };
+};

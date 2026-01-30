@@ -1,9 +1,17 @@
-event {
-    x: int;
-    y: char;
-    ts: int;
-}
+/*
+ * Aion Regex File: strategy.regex
+ * Author: Tanay Jha
+ * Description: Defines a basic symbolic regular expression.
+ */
 
+// Define the structure of the incoming event data.
+event {
+    int x;
+    char y;
+    int ts;
+};
+
+// Atomic predicates based on raw event fields.
 pred P_x_big = (x > 100);
 pred P_x_small = (x < 20);
 
@@ -11,8 +19,10 @@ pred P_y_a = (y == 'a');
 pred P_y_b = (y == 'b');
 pred P_y_c = (y == 'c');
 
+// Composite predicates combining atomic ones.
 pred P1 = P_x_big && P_y_a;
 pred P2 = P_x_big && P_y_b;
 pred P3 = P_x_small && (P_y_b || P_y_c);
 
-regex R1 = (P1 | P2*) . P3
+// The main state machine logic.
+regex R1 = (P1 | P2*) . P3;

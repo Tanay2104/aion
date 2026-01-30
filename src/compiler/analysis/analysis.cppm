@@ -6,5 +6,4 @@
 
 export module aion.analysis;
 
-export import :symbol_table;
 export import :minimizer;

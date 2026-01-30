@@ -5,3 +5,4 @@
 export module aion.core;
 export import :config;
 export import :diagnostics;
+export import :symbol_table;

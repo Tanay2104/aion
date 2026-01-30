@@ -2,30 +2,29 @@
 add_library(aion_core STATIC)
 target_sources(aion_core PUBLIC
     FILE_SET CXX_MODULES FILES
-    core/core.cppm
-    core/config.cppm
-    core/diagnostics.cppm
+        core/core.cppm
+        core/config.cppm
+        core/symbol_table.cppm
+        core/diagnostics.cppm
 )
-
 # --- 2. FRONTEND (Level 1) ---
 add_library(aion_frontend STATIC)
 target_sources(aion_frontend PUBLIC
     FILE_SET CXX_MODULES FILES
-    frontend/frontend.cppm
-    frontend/ast.cppm
-    frontend/lexer.cppm
-    frontend/parser.cppm
+        frontend/frontend.cppm
+        frontend/ast.cppm
+        frontend/lexer.cppm
+        frontend/parser.cppm
 )
 # Frontend depends on Core types
-target_link_libraries(aion_frontend PUBLIC aion_core)
+target_link_libraries(aion_frontend PUBLIC aion_core aion_utils)
 
 # --- 3. ANALYSIS (Level 2) ---
 add_library(aion_analysis STATIC)
 target_sources(aion_analysis PUBLIC
     FILE_SET CXX_MODULES FILES
-    analysis/analysis.cppm
-    analysis/symbol_table.cppm
-    analysis/minimizer.cppm
+        analysis/analysis.cppm
+        analysis/minimizer.cppm
 )
 # Analysis depends on Frontend (AST)
 target_link_libraries(aion_analysis PUBLIC aion_frontend)
@@ -34,10 +33,10 @@ target_link_libraries(aion_analysis PUBLIC aion_frontend)
 add_library(aion_automata STATIC)
 target_sources(aion_automata PUBLIC
     FILE_SET CXX_MODULES FILES
-    automata/automata.cppm
-    automata/nfa.cppm
-    automata/glushkov.cppm
-    automata/partitioner.cppm
+        automata/automata.cppm
+        automata/nfa.cppm
+        automata/glushkov.cppm
+        automata/partitioner.cppm
 )
 # Automata uses Analysis results
 target_link_libraries(aion_automata PUBLIC aion_analysis)
@@ -46,8 +45,8 @@ target_link_libraries(aion_automata PUBLIC aion_analysis)
 add_library(aion_codegen STATIC)
 target_sources(aion_codegen PUBLIC
     FILE_SET CXX_MODULES FILES
-    codegen/codegen.cppm
-    codegen/cpp_emitter.cppm
+        codegen/codegen.cppm
+        codegen/cpp_emitter.cppm
 )
 target_link_libraries(aion_codegen PUBLIC aion_automata)
 
