@@ -4,4 +4,4 @@
  */
 export module aion.core;
 export import :config;
-export import :diagno
+export import :diagnostics;

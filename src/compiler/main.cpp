@@ -9,3 +9,5 @@
  * nfa = automata::glushkov(ast, syms)
  * codgen.cpp_emit(nfa, args.output_path)
  */
+
+int main() {}
