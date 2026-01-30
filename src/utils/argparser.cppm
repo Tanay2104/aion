@@ -21,7 +21,7 @@ std::string help_string = "Aion is a symbolic regex compiler designed for Comple
                           "\t -V, --verbose [V0, V1, V2, V3]\n"
                           "\t\t Prints detailed information about each compilation stage. Select verbosity by -V\n"
                           "\t\t Default: -V1. --verbose results in -V2 verbosity\n"
-                          "\t -e, --emit [tokens, ast, nfa]\n"
+                          "\t -e, --emit [TOKENS, AST, NFA]\n"
                           "\t\t Dump intermediate TOKENS (dump the lexer output), AST (pretty-print the AST), NFA (in DOT format)\n"
                           "For more details, please see examples and docs.\n";
 
@@ -61,7 +61,6 @@ namespace utils {
     const std::string filename = argv[1];
     const ArgParser input(argc, argv);
     core::Options options;
-    options.output_filename = filename;
 
     if (input.cmdOptionExists("-h") || input.cmdOptionExists("--help")) {
       std::print("{}", help_string);
@@ -104,7 +103,7 @@ namespace utils {
     if (input.cmdOptionExists("--verbose") || input.cmdOptionExists("-V2")) {
       options.verbosity = core::Verbosity::SECOND_LEVEL;
     }
-    else if (input.cmdOptionExists("-VO")) {
+    else if (input.cmdOptionExists("-V0")) {
       options.verbosity = core::Verbosity::NONE;
     }
     else if (input.cmdOptionExists("-V1")) {

@@ -10,6 +10,7 @@
  * codegen.cpp_emit(nfa, args.output_path)
  */
 import aion.utils;
+import aion.frontend;
 import aion.core;
 import std;
 
@@ -37,11 +38,23 @@ int main(int argc, char** argv) {
   compilation_context.options = std::move(options);
   // Other fields are default constructed.
 
+  compilation_context.log(1, std::format("Reading input program: {}", argv[1]));
   std::ifstream input_file(argv[1]);
   if (!input_file) {
     std::println("Error opening input file: {}", argv[1]);
     return 1;
   }
   std::string program((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
-  std::println("Compiling file:\n {}", program);
+  // std::println("Compiling file:\n {}", program);
+  compilation_context.log(1, "Read successful");
+  // Lexing!!
+  compilation_context.log(1, "Tokenizing input program");
+  frontend::Lexer lexer(program, compilation_context);
+  std::vector<frontend::Token> tokens = lexer.tokenize();
+  compilation_context.log(1, "Tokenizing successful");
+  if (compilation_context.options.ir == core::IR::TOKENS) {
+    compilation_context.log(1, std::format("Dumping tokens to {}", compilation_context.options.output_filename));
+    lexer.dump_tokens(compilation_context.options.output_filename);
+    compilation_context.log(1, "Dumped tokens");
+  }
 }

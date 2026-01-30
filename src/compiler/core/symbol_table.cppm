@@ -39,7 +39,7 @@ public:
 
   // Called by Parser when it sees 'pred P1 = ...'
   void add_predicate(const std::string& name, const std::string& expr) {
-    predicates.insert({name, PredicateInfo(expr, next_alphabet_id)});
+    predicates.insert({name, PredicateInfo(expr, next_alphabet_id++)});
   }
 
   // Called by Glushkov Builder when it sees P1 in a regex

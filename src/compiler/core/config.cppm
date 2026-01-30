@@ -33,10 +33,10 @@ enum class IR : std::uint8_t {
 };
 
 enum class Verbosity : std::uint8_t {
-  NONE,
-  FIRST_LEVEL,
-  SECOND_LEVEL,
-  THIRD_LEVEL,
+  NONE = 0,
+  FIRST_LEVEL = 1,
+  SECOND_LEVEL = 2,
+  THIRD_LEVEL = 3,
 };
 
 struct Options {
@@ -44,7 +44,7 @@ struct Options {
   OptimLevel optim_level = OptimLevel::NONE;
   IR ir = IR::NONE;
   Verbosity verbosity = Verbosity::FIRST_LEVEL;
-  std::string output_filename = "";
+  std::string output_filename = "aion_out";
 };
 
 struct CompilationContext {
