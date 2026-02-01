@@ -325,10 +325,20 @@ void Lexer::scan_token() {
 void Lexer::add_token(TokenType type) {
   std::string_view text = source.substr(start, current - start);
   tokens.push_back(Token{type, text, SourceLocation{line, column - 1}});
-  compile_context.log(
-      3, std::format("Found Token: type {} text {} line {} col {}",
-                     enum_to_str[static_cast<std::size_t>(type)], text, line,
-                     column));
+  if (type != TokenType::ERROR)
+  {
+    compile_context.log(
+        3, std::format("Found Token: type {} text {} line {} col {}",
+                       enum_to_str[static_cast<std::size_t>(type)], text, line,
+                       column));
+  }
+  else
+  {
+    compile_context.log(
+       3, std::format("Found Token: type {} text {} line {} col {}",
+                      enum_to_str[static_cast<std::size_t>(type)], text, line,
+                      column), aion::core::YELLOW);
+  }
 }
 
 Lexer::Lexer(std::string_view src, core::CompilationContext &ctxt)

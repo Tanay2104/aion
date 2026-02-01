@@ -1,11 +1,16 @@
 # --- 1. CORE (Level 0) ---
 add_library(aion_core STATIC)
 target_sources(aion_core PUBLIC
-    FILE_SET CXX_MODULES FILES
-        core/core.cppm
-        core/config.cppm
-        core/symbol_table.cppm
-        core/diagnostics.cppm
+    FILE_SET CXX_MODULES
+        FILES
+            core/core.cppm
+            core/config.cppm
+            core/symbol_table.cppm
+            core/diagnostics.cppm
+            core/common.cppm
+        PRIVATE
+            core/diagnostics.cpp
+
 )
 # --- 2. FRONTEND (Level 1) ---
 add_library(aion_frontend STATIC)

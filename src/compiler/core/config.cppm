@@ -5,6 +5,7 @@
 export module aion.core:config;
 
 import :diagnostics;
+import :common;
 import :symbol_table;
 import std;
 
@@ -12,12 +13,7 @@ export namespace aion {
 namespace core {
 using namespace aion;
 
-enum class Arch : std::uint8_t {
-  AVX2,
-  AVX512,
-  SSE42,
-  NEON
-};
+enum class Arch : std::uint8_t { AVX2, AVX512, SSE42, NEON };
 enum class OptimLevel : std::uint8_t {
   NONE,
   FIRST_LEVEL,
@@ -25,12 +21,7 @@ enum class OptimLevel : std::uint8_t {
   THIRD_LEVEL,
 };
 
-enum class IR : std::uint8_t {
-  NONE,
-  TOKENS,
-  AST,
-  NFA
-};
+enum class IR : std::uint8_t { NONE, TOKENS, AST, NFA };
 
 enum class Verbosity : std::uint8_t {
   NONE = 0,
@@ -56,11 +47,11 @@ struct CompilationContext {
   core::SymbolTable symbols{};
 
   // Helper for verbosity
-  void log(int level, std::string_view msg) const {
+  void log(int level, std::string_view msg, std::string_view color = aion::core::GREEN) const {
     if (static_cast<int>(options.verbosity) >= level) {
-      std::println("[INFO] {}", msg);
+      std::println("{} [INFO] {} {}", color, aion::core::RESET, msg);
     }
   }
 };
-};
-}
+}; // namespace core
+} // namespace aion

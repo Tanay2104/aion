@@ -15,16 +15,6 @@ import aion.core;
 import std;
 
 int main(int argc, char** argv) {
-  /*
-   * Allowed options are:
-   * -o OUTPUT_FILE
-   * -march [native, AVX2, AVX512, SSE, NEON]
-   * -O O0/O1/O2/O3
-   * -h, --help
-   * -v, --version
-   * --verbose
-   * --emit <ir> (tokens, ast, nfa)
-   */
   using namespace aion;
 
   if (argc < 2) {
@@ -45,7 +35,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::string program((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
-  // std::println("Compiling file:\n {}", program);
+  compilation_context.diagnostics.set_source_location(program);
   compilation_context.log(1, "Read successful");
   // Lexing!!
   compilation_context.log(1, "Tokenizing input program");
