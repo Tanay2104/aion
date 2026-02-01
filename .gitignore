@@ -3,3 +3,4 @@ scalar_glushkov/
 build/
 .idea/
 tester.sh
+.venv/

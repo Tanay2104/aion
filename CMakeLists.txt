@@ -8,11 +8,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(aion VERSION 0.1.0 LANGUAGES C CXX)
 
-# Compiler Warnings (Crucial for systems dev)
+# Compiler Warnings
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Wno-unknown-pragmas)
 endif()
 
+
+# Using gtest for
 # Output directories for binaries
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

@@ -10,11 +10,14 @@ target_sources(aion_core PUBLIC
 # --- 2. FRONTEND (Level 1) ---
 add_library(aion_frontend STATIC)
 target_sources(aion_frontend PUBLIC
-    FILE_SET CXX_MODULES FILES
-        frontend/frontend.cppm
-        frontend/ast.cppm
-        frontend/lexer.cppm
-        frontend/parser.cppm
+    FILE_SET CXX_MODULES
+        FILES
+            frontend/frontend.cppm
+            frontend/ast.cppm
+            frontend/lexer.cppm
+            frontend/parser.cppm
+        PRIVATE
+            frontend/lexer.cpp
 )
 # Frontend depends on Core types
 target_link_libraries(aion_frontend PUBLIC aion_core aion_utils)
