@@ -25,4 +25,4 @@ pred P2 = P_x_big && P_y_b;
 pred P3 = P_x_small && (P_y_b || P_y_c);
 
 // The main state machine logic.
-regex R1 = (P1 | P2*) . P3;
+regex R1 = (P1 | P2*) . _ . P3;

@@ -10,7 +10,7 @@ import std;
 import aion.core;
 
 export namespace aion::frontend {
-constexpr std::array<std::string, 28> enum_to_str = {
+constexpr std::array<std::string, 29> enum_to_str = {
   "KW_EVENT",      // "event
 "KW_PRED",       // "pred"
 "KW_REGEX",      // "regex"
@@ -38,6 +38,7 @@ constexpr std::array<std::string, 28> enum_to_str = {
 "UNION",          // | (Union)
 "STAR",          // * (Kleene Star)
 "DOT",           // . (Concatenation)
+  "ANY",          // _ (underscore, matches any character)
 
 // Punctuation / Delimiters
 "LPAREN",        // (
@@ -79,6 +80,7 @@ enum class TokenType {
   UNION,          // | (Union)
   STAR,          // * (Kleene Star)
   DOT,           // . (Concatenation)
+  ANY,          // _ (underscore, matches any character)
 
   // Punctuation / Delimiters
   LPAREN,        // (
@@ -283,6 +285,10 @@ private:
       else {
         add_token(TokenType::ERROR);
       }
+      break;
+    case '_':
+      // Assuming variables names don't start with underscore???
+      add_token(TokenType::ANY);
       break;
     case '|':
       if (peek() == '|') {
