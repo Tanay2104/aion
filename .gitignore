@@ -1,6 +1,9 @@
-docs/
 scalar_glushkov/
 build/
 .idea/
 tester.sh
 .venv/
+*.pdf
+*.tex
+*.aux
+resources.md
