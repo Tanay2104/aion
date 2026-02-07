@@ -13,6 +13,9 @@ export namespace aion::frontend {
         FLOAT,
         STRING
     };
+    constexpr std::array<std::string, 4> type_string =
+        { "INT", "CHAR", "FLOAT", "STRING" };
+
     struct FieldDecl
     {
         Type type{};
@@ -95,6 +98,8 @@ export namespace aion::frontend {
         std::vector<PredDecl> predicates{};
         std::vector<RegexDecl> regexes{};
     };
+
+    void dump_ast(const AionFile& ast);
 /* The visitors would look something like this:
     struct PredicateVisitor {
     virtual void visit(const AndExpr&) = 0;

@@ -11,7 +11,8 @@ export namespace aion {
     struct SourceLocation {
       std::size_t line = 1;
       std::size_t column = 1;
-      std::string_view file_name = "";
+      SourceLocation(const std::size_t line, const std::size_t column)
+    : line(line), column(column) {}
     };
     class Diagnostics
     {

@@ -1,0 +1,5 @@
+event {
+int x;
+float y;
+char z;
+};

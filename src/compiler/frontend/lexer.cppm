@@ -54,12 +54,7 @@ enum class TokenType {
   ERROR        // Special token for an unrecognized character
 };
 
-struct SourceLocation {
-  std::size_t line = 1;
-  std::size_t column = 1;
-  SourceLocation(const std::size_t line, const std::size_t column)
-      : line(line), column(column) {}
-};
+using SourceLocation = core::SourceLocation;
 
 struct Token {
   TokenType type{};

@@ -23,6 +23,11 @@ target_sources(aion_frontend PUBLIC
             frontend/parser.cppm
         PRIVATE
             frontend/lexer.cpp
+            frontend/parser.cpp
+            frontend/parser_event.cpp
+            frontend/parser_pred.cpp
+            frontend/parser_regex.cpp
+            frontend/ast_dump.cpp
 )
 # Frontend depends on Core types
 target_link_libraries(aion_frontend PUBLIC aion_core aion_utils)
