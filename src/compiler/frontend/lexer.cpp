@@ -323,7 +323,7 @@ void Lexer::scan_token() {
 }
 
 void Lexer::add_token(TokenType type) {
-  std::string_view text = source.substr(start, current - start);
+  std::string_view text = std::string_view(source).substr(start, current - start);
   tokens.push_back(Token{type, text, SourceLocation{line, column - 1}});
   if (type != TokenType::ERROR)
   {

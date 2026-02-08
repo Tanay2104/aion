@@ -10,14 +10,14 @@ import aion.core;
 
 namespace aion::frontend
 {
- FieldDecl Parser::parse_field_decl()
+ std::optional<FieldDecl> Parser::parse_field_decl()
     {
         FieldDecl field;
         // check for identifier.
         if (peek().type != TokenType::IDENTIFIER)
         {
             ctxt.diagnostics.report_error(peek().location,"expected identifier for data type");
-            std::exit(1);
+            return std::nullopt;
         }
         // see the dtype.
         std::string_view type_text = peek().text;
@@ -39,8 +39,8 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location,"Unknown data type");
-            std::exit(1);
+            ctxt.diagnostics.report_error(peek().location,"unknown data type");
+            return std::nullopt;
         }
 
         advance();
@@ -48,7 +48,7 @@ namespace aion::frontend
         if (peek().type != TokenType::IDENTIFIER)
         {
             ctxt.diagnostics.report_error(peek().location,"expected identifier for variable name");
-            std::exit(1);
+            return std::nullopt;
         }
 
         field.name = peek().text;
@@ -58,36 +58,44 @@ namespace aion::frontend
         if (peek().type != TokenType::SEMICOLON)
         {
             ctxt.diagnostics.report_error(peek().location,"expected ';'");
-            std::exit(1);
+            return std::nullopt;
         }
         advance();
      return field;
     }
-    EventDecl Parser::parse_event_decl()
+   std::optional<EventDecl> Parser::parse_event_decl()
     {
         EventDecl event_decl;
         if (peek().type != TokenType::KW_EVENT)
         {
             ctxt.diagnostics.report_error(peek().location,"expected keyword 'event'");
-            std::exit(1);
+            return std::nullopt;
         }
         advance();
         if (peek().type != TokenType::LBRACE)
         {
             ctxt.diagnostics.report_error(peek().location,"expected left brace '{'");
-            std::exit(1);
+            return std::nullopt;
         }
         advance();
         while (peek().type != TokenType::RBRACE)
         {
-            event_decl.fields.push_back(parse_field_decl());
-            ctxt.log(3, std::format("Found field declaration: varname {} dtype {}", event_decl.fields.back().name,  type_string[static_cast<std::uint8_t>(event_decl.fields.back().type)]));
+            const auto& field_decl = parse_field_decl();
+            if (field_decl.has_value())
+            {
+                event_decl.fields.push_back(field_decl.value());
+                ctxt.log(3, std::format("Found field declaration: varname {} dtype {}", event_decl.fields.back().name,  type_string[static_cast<std::uint8_t>(event_decl.fields.back().type)]));
+            }
+            else
+            {
+                synchronize();
+            }
         }
         advance();
         if (peek().type != TokenType::SEMICOLON)
         {
             ctxt.diagnostics.report_error(peek().location,"expected ';'");
-            std::exit(1);
+            return std::nullopt;
         }
         advance();
         ctxt.log(3, "Found complete event declaration");

@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   compilation_context.log(1, "Tokenizing input program");
   frontend::Lexer lexer(program, compilation_context);
   std::vector<frontend::Token> tokens = lexer.tokenize();
-  compilation_context.log(1, "Tokenizing successful");
+  compilation_context.log(1, "Tokenizing complete");
   if (compilation_context.options.ir == core::IR::TOKENS) {
     compilation_context.log(1, std::format("Dumping tokens to {}", compilation_context.options.output_filename));
     lexer.dump_tokens(compilation_context.options.output_filename);
@@ -56,7 +56,14 @@ int main(int argc, char** argv) {
   compilation_context.log(1, "Parsing input program");
   frontend::Parser parser(tokens, compilation_context);
   auto ast = parser.parse();
-  compilation_context.log(1, "Parsing successful");
+  // NOTE: ast existance does not imply ast validity.
+  if (compilation_context.diagnostics.get_error_count() > aion::core::MAX_ERROR_COUNT)
+  {
+    compilation_context.log(1, "Too many errors, stopping now", aion::core::RED);
+    std::exit(1);
+  }
+
+  compilation_context.log(1, "Parsing complete");
   if (compilation_context.options.ir == core::IR::AST)
   {
     compilation_context.log(1, std::format("Dumping ast to {}", compilation_context.options.output_filename));

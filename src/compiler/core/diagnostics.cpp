@@ -33,7 +33,7 @@ namespace aion::core
         std::string_view line_text = current_source_code.substr(line_start, line_end - line_start);
 
         // printing the line.
-        std::cerr << std::format("{}, {:4} | {} {}", BLUE, location.line, RESET, line_text);
+        std::cerr << std::format("{} {:4} | {} {}", BLUE, location.line, RESET, line_text);
         // print the caret.
         std::string padding(location.column+6, ' ');
         std::cerr << std::format("{}^{}\n", BOLD, RESET);

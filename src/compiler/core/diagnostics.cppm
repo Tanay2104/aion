@@ -8,6 +8,8 @@ import :common;
 
 export namespace aion {
   namespace core {
+    constexpr std::uint8_t MAX_ERROR_COUNT = 16;
+    constexpr std::uint8_t MAX_WARNING_COUNT = 32;
     struct SourceLocation {
       std::size_t line = 1;
       std::size_t column = 1;

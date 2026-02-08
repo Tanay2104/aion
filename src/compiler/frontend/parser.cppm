@@ -25,11 +25,18 @@ export namespace aion::frontend
         [[nodiscard]] Token peek() const;
         // Returns the next token without incrementing current.
         [[nodiscard]] Token peek_next() const;
+        // have we reached the end??
+        [[nodiscard]] bool is_at_end() const;
+        // get the previous token
+        [[nodiscard]] Token previous() const;
+        // advance till the next semicolon, for errors.
+        void synchronize();
+
 
         // Parsing helper functions. One function for each rule.
 
-        EventDecl parse_event_decl();
-        FieldDecl parse_field_decl();
+        std::optional<EventDecl> parse_event_decl();
+        std::optional<FieldDecl> parse_field_decl();
 
         void parse_pred_decl();
         void parse_predexpr();

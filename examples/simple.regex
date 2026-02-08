@@ -1,5 +1,3 @@
 event {
-int x;
-float y;
-char z;
+int x; float y; char z;
 };
