@@ -1,5 +1,5 @@
 /* parser.cpp
- * Implementation of the recursive descent parser.
+ * Implementation of core functions of the recursive descent parser.
  * Created on 7 Feb 2026 by Tanay Jha
  */
 
@@ -17,6 +17,7 @@ namespace  aion::frontend
     }
     Token Parser::peek() const
     {
+        if (is_at_end()) return tokens[current-1];
         return tokens[current];
     }
 
@@ -27,7 +28,7 @@ namespace  aion::frontend
 
     bool Parser::is_at_end() const
     {
-        return (current == tokens.size());
+        return (current == tokens.size() && tokens[current-1].type == TokenType::END_OF_FILE);
     }
 
     Token Parser::previous() const
@@ -73,6 +74,22 @@ namespace  aion::frontend
             ctxt.log(2, "No valid event found", aion::core::YELLOW);
             synchronize();
         }
+
+        while (peek().type == TokenType::KW_PRED)
+        {
+            auto&& pred_decl = parse_pred_decl();
+            if (pred_decl.has_value())
+            {
+                root->predicates.push_back(std::move(pred_decl.value()));
+            }
+            else
+            {
+                ctxt.log(2, "Invalid predicate found", aion::core::YELLOW);
+                synchronize();
+            }
+            // advance();
+        }
+
         return std::move(root);
     }
 };

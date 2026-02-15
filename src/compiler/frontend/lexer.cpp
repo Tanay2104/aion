@@ -92,21 +92,21 @@ bool Lexer::is_identifier() {
   return true;
 }
 bool Lexer::is_pred() {
-  if ((source.substr(start, 4) == "pred") && source[start + 4] == ' ') {
+  if ((std::string_view(source).substr(start, 4) == "pred") && source[start + 4] == ' ') {
     return true;
   }
   return false;
 }
 
 bool Lexer::is_regex() {
-  if ((source.substr(start, 5) == "regex") && source[start + 5] == ' ') {
+  if ((std::string_view(source).substr(start, 5) == "regex") && source[start + 5] == ' ') {
     return true;
   }
   return false;
 }
 
 bool Lexer::is_event() {
-  if ((source.substr(start, 5) == "event") && source[start + 5] == ' ') {
+  if ((std::string_view(source).substr(start, 5) == "event") && source[start + 5] == ' ') {
     return true;
   }
   return false;
@@ -141,6 +141,7 @@ bool Lexer::is_lit_string() {
   if (!(peek() == '\'' || peek() == '\"')) {
     return false;
   }
+  advance();
   while (is_lit_char()) {
     advance();
   }
@@ -323,8 +324,18 @@ void Lexer::scan_token() {
 }
 
 void Lexer::add_token(TokenType type) {
-  std::string_view text = std::string_view(source).substr(start, current - start);
-  tokens.push_back(Token{type, text, SourceLocation{line, column - 1}});
+  std::string_view text;
+  if (type == TokenType::LIT_CHAR || type == TokenType::LIT_STRING)
+  {
+    // need to change start, end because of quotes.
+    text = std::string_view(source).substr(start+1, current - start - 2);
+    tokens.push_back(Token{type, text, SourceLocation{line, column - 1}});
+  }
+  else
+  {
+    text = std::string_view(source).substr(start, current - start);
+    tokens.push_back(Token{type, text, SourceLocation{line, column - 1}});
+  }
   if (type != TokenType::ERROR)
   {
     compile_context.log(

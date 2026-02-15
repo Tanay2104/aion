@@ -20,7 +20,7 @@ pred P_y_b = (y == 'b');
 pred P_y_c = (y == 'c');
 
 // Composite predicates combining atomic ones.
-pred P1 = P_x_big && P_y_a;
+pred P1 = P_x_big && P_y_a && !P_x_small;
 pred P2 = P_x_big && P_y_b;
 pred P3 = P_x_small && (P_y_b || P_y_c);
 

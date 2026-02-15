@@ -19,7 +19,7 @@ export namespace aion::frontend {
     struct FieldDecl
     {
         Type type{};
-        std::string name{};
+        std::string_view name{};
     };
     struct EventDecl
     {
@@ -54,16 +54,20 @@ export namespace aion::frontend {
     };
     struct PredRefExpr : PredExpr
     {
-        std::string name;
+        std::string_view name;
     };
     struct Literal
     {
         Type type{};
-        std::variant<int, float, char, std::string> value{};
+        std::variant<int, float, char, std::string_view> value{};
+    };
+    struct PrimaryPredExpr : PredExpr
+    {
+        std::variant<PredRefExpr, Literal, std::unique_ptr<PredExpr>> expr;
     };
     struct PredDecl
     {
-        std::string name{};
+        std::string_view name{};
         std::unique_ptr<PredExpr> expr{};
     };
     struct RegexExpr
@@ -90,7 +94,7 @@ export namespace aion::frontend {
     struct RegexWildcard : RegexExpr {};
     struct RegexDecl
     {
-        std::string name{};
+        std::string_view name{};
         std::unique_ptr<RegexExpr> expr{};
     };
     struct AionFile {

@@ -38,13 +38,13 @@ export namespace aion::frontend
         std::optional<EventDecl> parse_event_decl();
         std::optional<FieldDecl> parse_field_decl();
 
-        void parse_pred_decl();
-        void parse_predexpr();
-        void parse_predexpr_or();
-        void parse_predexpr_and();
-        void parse_predexpr_not();
-        void parse_predexpr_comp();
-        void parse_predexpr_primary();
+        std::optional<PredDecl> parse_pred_decl();
+        std::unique_ptr<PredExpr> parse_predexpr();
+        std::unique_ptr<PredExpr> parse_predexpr_or();
+        std::unique_ptr<PredExpr> parse_predexpr_and();
+        std::unique_ptr<PredExpr> parse_predexpr_not();
+        std::unique_ptr<PredExpr> parse_predexpr_comp();
+        std::unique_ptr<PrimaryPredExpr> parse_predexpr_primary();
 
 
         void parse_regex_decl();

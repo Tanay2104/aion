@@ -35,7 +35,7 @@ struct Options {
   OptimLevel optim_level = OptimLevel::NONE;
   IR ir = IR::NONE;
   Verbosity verbosity = Verbosity::FIRST_LEVEL;
-  std::string output_filename = "aion_out";
+  std::string output_filename = "aion.out";
 };
 
 struct CompilationContext {
