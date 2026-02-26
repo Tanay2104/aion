@@ -4,3 +4,4 @@ int x; float y; char z;
 
 pred P1 = (x == 10);
 pred P2 = (y > 4.5);
+// regex R1 = P1;

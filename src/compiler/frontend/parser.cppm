@@ -47,12 +47,12 @@ export namespace aion::frontend
         std::unique_ptr<PrimaryPredExpr> parse_predexpr_primary();
 
 
-        void parse_regex_decl();
-        void parse_regex();
-        void parse_regex_alt();
-        void parse_regex_concat();
-        void parse_regex_unary();
-        void parse_regex_primary();
+        std::optional<RegexDecl> parse_regex_decl();
+        std::unique_ptr<RegexExpr> parse_regex();
+        std::unique_ptr<RegexExpr> parse_regex_alt();
+        std::unique_ptr<RegexExpr> parse_regex_concat();
+        std::unique_ptr<RegexExpr> parse_regex_unary();
+        std::unique_ptr<RegexPrimary> parse_regex_primary();
 
 
         public:

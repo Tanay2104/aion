@@ -87,11 +87,16 @@ export namespace aion::frontend {
     {
         std::unique_ptr<RegexExpr> inner;
     };
-    struct RegexPredRef : RegexExpr
+    struct RegexRefExpr : RegexExpr
     {
-        PredRefExpr pred_ref_expr;
+        std::string_view regex_ref_expr; // reger to another regex
     };
     struct RegexWildcard : RegexExpr {};
+    struct RegexPrimary : RegexExpr
+    {
+        // we can refer to a predicate, a regex ref, a wildcard or a regex
+        std::variant<std::string_view, RegexWildcard, std::unique_ptr<RegexExpr>> expr;
+    };
     struct RegexDecl
     {
         std::string_view name{};

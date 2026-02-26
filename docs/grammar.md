@@ -65,12 +65,10 @@ regex_expr
 → regex_alt
 
 regex_alt
-→ regex_concat
-| regex_alt "|" regex_concat
+→ regex_concat ("|" regex_concat)*
 
 regex_concat
-→ regex_unary
-| regex_concat "." regex_unary
+→ regex_unary ("." regex_unary)*
 
 regex_unary
 → regex_primary

@@ -90,6 +90,20 @@ namespace  aion::frontend
             // advance();
         }
 
+        while (peek().type == TokenType::KW_REGEX)
+        {
+            auto&& regex_decl = parse_regex_decl();
+            if (regex_decl.has_value())
+            {
+                root->regexes.push_back(std::move(regex_decl.value()));
+            }
+            else
+            {
+                ctxt.log(2, "Invalid regex found", aion::core::YELLOW);
+                synchronize();
+            }
+        }
+
         return std::move(root);
     }
 };

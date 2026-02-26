@@ -31,7 +31,7 @@ namespace aion::frontend
 
         if (peek().type != TokenType::EQUALS)
         {
-            ctxt.diagnostics.report_error(peek().location,"expected left brace '='");
+            ctxt.diagnostics.report_error(peek().location,"expected token '='");
             return std::nullopt;
         }
         advance();
@@ -288,6 +288,11 @@ namespace aion::frontend
             }
             // advance();
             primary_predexpr->expr = std::move(predexpr);
+        }
+        else
+        {
+            ctxt.diagnostics.report_error(peek().location, "unknown expression encountered");
+            return nullptr;
         }
         advance();
         return primary_predexpr;

@@ -190,6 +190,11 @@ namespace aion::frontend
                     prefix();
                     std::println("PredRefExpr \"{}\"", val.name);
                 }
+                else if constexpr (std::is_same_v<T,
+                         std::unique_ptr<PredExpr>>)
+                {
+                    visit(*val);
+                }
                 else if constexpr (std::is_same_v<T, Literal>)
                 {
                     prefix();
@@ -200,15 +205,18 @@ namespace aion::frontend
 
                     std::visit([](auto const& v)
                     {
-                        std::print("{}", v);
+                        using V = std::decay_t<decltype(v)>;
+
+                        if constexpr (std::is_same_v<V, char>)
+                            std::print("'{}'", v);
+                        else if constexpr (std::is_same_v<V, std::string_view>)
+                            std::print("\"{}\"", v);
+                        else
+                            std::print("{}", v);
+
                     }, val.value);
 
                     std::println(")");
-                }
-                else if constexpr (std::is_same_v<T,
-                         std::unique_ptr<PredExpr>>)
-                {
-                    visit(*val);
                 }
 
             }, e.expr);
@@ -238,8 +246,10 @@ namespace aion::frontend
                 visit(*con);
             else if (auto* star = dynamic_cast<const RegexStar*>(&expr))
                 visit(*star);
-            else if (auto* ref = dynamic_cast<const RegexPredRef*>(&expr))
+            else if (auto* ref = dynamic_cast<const RegexRefExpr*>(&expr))
                 visit(*ref);
+            else if (auto* prim = dynamic_cast<const RegexPrimary*>(&expr))
+                visit(*prim);
             else if (dynamic_cast<const RegexWildcard*>(&expr))
             {
                 prefix();
@@ -283,11 +293,42 @@ namespace aion::frontend
             pop();
         }
 
-        void visit(const RegexPredRef& e)
+        void visit(const RegexRefExpr& e)
         {
             prefix();
-            std::println("RegexPredRef \"{}\"",
-                e.pred_ref_expr.name);
+            std::println("RegexRefExpr \"{}\"", e.regex_ref_expr);
+        }
+        void visit(const RegexPrimary& e)
+        {
+            std::visit([this](auto const& val)
+            {
+                using T = std::decay_t<decltype(val)>;
+
+                if constexpr (std::is_same_v<T, std::string_view>)
+                {
+                    prefix();
+                    std::println("RegexPrimary PredicateRef \"{}\"", val);
+                }
+                else if constexpr (std::is_same_v<T, RegexWildcard>)
+                {
+                    prefix();
+                    std::println("RegexPrimary");
+                    push(false);
+                    prefix();
+                    std::println("RegexWildcard");
+                    pop();
+                }
+                else if constexpr (std::is_same_v<T,
+                             std::unique_ptr<RegexExpr>>)
+                {
+                    prefix();
+                    std::println("RegexPrimary (group)");
+                    push(false);
+                    visit(*val);
+                    pop();
+                }
+
+            }, e.expr);
         }
     };
 
