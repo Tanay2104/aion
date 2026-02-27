@@ -20,6 +20,7 @@ type
     → "int"
     | "char"
     | "float"
+    | "bool"
     | "string"
 ```
 

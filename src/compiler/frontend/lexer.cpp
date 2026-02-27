@@ -10,7 +10,7 @@ import std;
 import aion.core;
 
 namespace aion::frontend {
-constexpr std::array<std::string, 29> enum_to_str = {
+constexpr std::array<std::string, 30> enum_to_str = {
     "KW_EVENT", // "event
     "KW_PRED",  // "pred"
     "KW_REGEX", // "regex"
@@ -20,6 +20,7 @@ constexpr std::array<std::string, 29> enum_to_str = {
     "LIT_INTEGER", // e.g., 100, 20
     "LIT_FLOAT",   // e.g., 100.05
     "LIT_CHAR",    // e.g., 'a'
+    "LIT_BOOL", //  true, false
     "LIT_STRING",  // e.g., "hello"
 
     // C++ Predicate Operators
@@ -133,6 +134,20 @@ bool Lexer::is_lit_char() {
   if (((peek() - 'a' >= 0 && peek() - 'a' <= 26) ||
        (peek() - 'A' >= 0 && peek() - 'A' <= 26)) ||
       (peek() == '_')) {
+    return true;
+  }
+  return false;
+}
+  bool Lexer::is_lit_bool()
+{
+  if (std::string_view(source).substr(start,4) == "true")
+  {
+    advance(4);
+    return true;
+  }
+  else if (std::string_view(source).substr(start,5) == "false")
+  {
+    advance(5);
     return true;
   }
   return false;
@@ -308,7 +323,9 @@ void Lexer::scan_token() {
     //   // std::println("Lit character found");
     //   add_token(TokenType::LIT_CHAR);
     // }
-    else if (is_lit_string()) {
+    else if (is_lit_bool()) {
+      add_token(TokenType::LIT_BOOL);
+    } else if (is_lit_string()) {
       add_token(TokenType::LIT_STRING);
     } else if (is_lit_float()) {
       add_token(TokenType::LIT_FLOAT);

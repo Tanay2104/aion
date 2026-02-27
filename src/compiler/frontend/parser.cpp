@@ -75,7 +75,7 @@ namespace  aion::frontend
         }
         else
         {
-            ctxt.log(2, "No valid event found", aion::core::YELLOW);
+            ctxt.log(1, "No valid event found", aion::core::YELLOW);
             synchronize();
         }
 
@@ -88,7 +88,7 @@ namespace  aion::frontend
             }
             else
             {
-                ctxt.log(2, "Invalid predicate found", aion::core::YELLOW);
+                ctxt.log(1, "Invalid predicate found", aion::core::YELLOW);
                 synchronize();
             }
             // advance();
@@ -103,7 +103,7 @@ namespace  aion::frontend
             }
             else
             {
-                ctxt.log(2, "Invalid regex found", aion::core::YELLOW);
+                ctxt.log(1, "Invalid regex found", aion::core::YELLOW);
                 synchronize();
             }
         }

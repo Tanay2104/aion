@@ -9,11 +9,14 @@ event {
     int x;
     char y;
     int ts;
+    bool valid;
 };
 
 // Atomic predicates based on raw event fields.
 pred P_x_big = (x > 100);
 pred P_x_small = (x < 20);
+
+pred P_valid = (valid == true);
 
 pred P_y_a = (y == 'a');
 pred P_y_b = (y == 'b');

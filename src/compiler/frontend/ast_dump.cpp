@@ -17,21 +17,21 @@ namespace aion::frontend
     struct AstPrinter
     {
         std::vector<bool> branches;
-
+        std::ostream& out;
         /* ───────────────────────────── */
-
+        AstPrinter(std::ostream& _out) : out(_out) {}
         void prefix() const
         {
             for (std::size_t i = 0; i + 1 < branches.size(); ++i)
             {
-                if (branches[i]) std::print("│  ");
-                else             std::print("   ");
+                if (branches[i]) std::print(out,"│  ");
+                else             std::print(out, "   ");
             }
 
             if (!branches.empty())
             {
-                if (branches.back()) std::print("├─ ");
-                else                 std::print("└─ ");
+                if (branches.back()) std::print(out,"├─ ");
+                else                 std::print(out,"└─ ");
             }
         }
 
@@ -42,7 +42,7 @@ namespace aion::frontend
 
         void visit(const AionFile& file)
         {
-            std::println("AionFile");
+            std::println(out, "AionFile");
 
             push(true);
             visit(file.event);
@@ -71,7 +71,7 @@ namespace aion::frontend
         void visit(const EventDecl& e)
         {
             prefix();
-            std::println("EventDecl");
+            std::println(out,"EventDecl");
 
             for (std::size_t i = 0; i < e.fields.size(); ++i)
             {
@@ -84,17 +84,17 @@ namespace aion::frontend
         void visit(const FieldDecl& f)
         {
             prefix();
-            std::println("FieldDecl");
+            std::println(out,"FieldDecl");
 
             push(true);
             prefix();
-            std::println("type: {}",
+            std::println(out, "type: {}",
                 type_string[static_cast<std::size_t>(f.type)]);
             pop();
 
             push(false);
             prefix();
-            std::println("name: {}", f.name);
+            std::println(out, "name: {}", f.name);
             pop();
         }
 
@@ -104,7 +104,7 @@ namespace aion::frontend
         void visit(const PredDecl& d)
         {
             prefix();
-            std::println("PredDecl \"{}\"", d.name);
+            std::println(out, "PredDecl \"{}\"", d.name);
 
             push(false);
             visit(*d.expr);
@@ -131,7 +131,7 @@ namespace aion::frontend
         void visit(const AndPredExpr& e)
         {
             prefix();
-            std::println("AndPredExpr");
+            std::println(out ,"AndPredExpr");
 
             for (std::size_t i = 0; i < e.terms.size(); ++i)
             {
@@ -144,7 +144,7 @@ namespace aion::frontend
         void visit(const OrPredExpr& e)
         {
             prefix();
-            std::println("OrPredExpr");
+            std::println(out, "OrPredExpr");
 
             for (std::size_t i = 0; i < e.terms.size(); ++i)
             {
@@ -157,7 +157,7 @@ namespace aion::frontend
         void visit(const NotExpr& e)
         {
             prefix();
-            std::println("NotExpr");
+            std::println(out, "NotExpr");
 
             push(false);
             visit(*e.inner);
@@ -167,7 +167,7 @@ namespace aion::frontend
         void visit(const CompPredExpr& e)
         {
             prefix();
-            std::println("CompPredExpr ({})",
+            std::println(out, "CompPredExpr ({})",
                 compop_string[static_cast<std::size_t>(e.op)]);
 
             push(true);
@@ -188,7 +188,7 @@ namespace aion::frontend
                 if constexpr (std::is_same_v<T, PredRefExpr>)
                 {
                     prefix();
-                    std::println("PredRefExpr \"{}\"", val.name);
+                    std::println(out, "PredRefExpr \"{}\"", val.name);
                 }
                 else if constexpr (std::is_same_v<T,
                          std::unique_ptr<PredExpr>>)
@@ -198,25 +198,25 @@ namespace aion::frontend
                 else if constexpr (std::is_same_v<T, Literal>)
                 {
                     prefix();
-                    std::print("Literal {}(",
+                    std::print(out, "Literal {}(",
                         type_string[
                             static_cast<std::size_t>(val.type)
                         ]);
 
-                    std::visit([](auto const& v)
+                    std::visit([this](auto const& v)
                     {
                         using V = std::decay_t<decltype(v)>;
 
                         if constexpr (std::is_same_v<V, char>)
-                            std::print("'{}'", v);
+                            std::print(out, "'{}'", v);
                         else if constexpr (std::is_same_v<V, std::string_view>)
-                            std::print("\"{}\"", v);
+                            std::print(out,"\"{}\"", v);
                         else
-                            std::print("{}", v);
+                            std::print(out, "{}", v);
 
                     }, val.value);
 
-                    std::println(")");
+                    std::println(out, ")");
                 }
 
             }, e.expr);
@@ -228,7 +228,7 @@ namespace aion::frontend
         void visit(const RegexDecl& d)
         {
             prefix();
-            std::println("RegexDecl \"{}\"", d.name);
+            std::println(out, "RegexDecl \"{}\"", d.name);
 
             push(false);
             visit(*d.expr);
@@ -253,14 +253,14 @@ namespace aion::frontend
             else if (dynamic_cast<const RegexWildcard*>(&expr))
             {
                 prefix();
-                std::println("RegexWildcard");
+                std::println(out, "RegexWildcard");
             }
         }
 
         void visit(const RegexUnion& e)
         {
             prefix();
-            std::println("RegexUnion");
+            std::println(out, "RegexUnion");
 
             for (std::size_t i = 0; i < e.options.size(); ++i)
             {
@@ -273,7 +273,7 @@ namespace aion::frontend
         void visit(const RegexConcat& e)
         {
             prefix();
-            std::println("RegexConcat");
+            std::println(out, "RegexConcat");
 
             for (std::size_t i = 0; i < e.sequence.size(); ++i)
             {
@@ -286,7 +286,7 @@ namespace aion::frontend
         void visit(const RegexStar& e)
         {
             prefix();
-            std::println("RegexStar");
+            std::println(out, "RegexStar");
 
             push(false);
             visit(*e.inner);
@@ -296,7 +296,7 @@ namespace aion::frontend
         void visit(const RegexRefExpr& e)
         {
             prefix();
-            std::println("RegexRefExpr \"{}\"", e.regex_ref_expr);
+            std::println(out, "RegexRefExpr \"{}\"", e.regex_ref_expr);
         }
         void visit(const RegexPrimary& e)
         {
@@ -307,22 +307,22 @@ namespace aion::frontend
                 if constexpr (std::is_same_v<T, std::string_view>)
                 {
                     prefix();
-                    std::println("RegexPrimary PredicateRef \"{}\"", val);
+                    std::println(out, "RegexPrimary PredicateRef \"{}\"", val);
                 }
                 else if constexpr (std::is_same_v<T, RegexWildcard>)
                 {
                     prefix();
-                    std::println("RegexPrimary");
+                    std::println(out, "RegexPrimary");
                     push(false);
                     prefix();
-                    std::println("RegexWildcard");
+                    std::println(out, "RegexWildcard");
                     pop();
                 }
                 else if constexpr (std::is_same_v<T,
                              std::unique_ptr<RegexExpr>>)
                 {
                     prefix();
-                    std::println("RegexPrimary (group)");
+                    std::println(out, "RegexPrimary (group)");
                     push(false);
                     visit(*val);
                     pop();
@@ -334,9 +334,20 @@ namespace aion::frontend
 
     /* ───────────────────────────── */
 
-    void dump_ast(const AionFile& ast)
+    void dump_ast(const AionFile& ast, const core::CompilationContext& ctx)
     {
-        AstPrinter p;
-        p.visit(ast);
+        if (ctx.options.output_filename != core::DEFAULT_NAME)
+        {
+            std::ofstream output_file;
+            output_file.open(ctx.options.output_filename);
+            AstPrinter p(output_file);
+            p.visit(ast);
+            output_file.close();
+        }
+        else
+        {
+            AstPrinter p(std::cout);
+            p.visit(ast);
+        }
     }
 }

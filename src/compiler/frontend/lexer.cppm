@@ -22,6 +22,7 @@ enum class TokenType {
   LIT_INTEGER, // e.g., 100, 20
   LIT_FLOAT,   // e.g., 100.05
   LIT_CHAR,    // e.g., 'a'
+  LIT_BOOL, // true or false
   LIT_STRING,  // e.g., "hello"
 
   // C++ Predicate Operators
@@ -99,6 +100,7 @@ private:
   bool is_lit_char();
   bool is_lit_string();
   bool is_lit_float();
+  bool is_lit_bool();
 
   // specific handlers.
   void scan_token();

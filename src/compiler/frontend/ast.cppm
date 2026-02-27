@@ -55,7 +55,7 @@ export namespace aion::frontend {
     struct Literal
     {
         core::Type type{};
-        std::variant<int, float, char, std::string_view> value{};
+        std::variant<int, float, char, std::string_view, bool> value{};
     };
     struct PrimaryPredExpr : PredExpr
     {
@@ -104,7 +104,7 @@ export namespace aion::frontend {
         std::vector<RegexDecl> regexes{};
     };
 
-    void dump_ast(const AionFile& ast);
+    void dump_ast(const AionFile& ast, const core::CompilationContext& ctx);
 /* The visitors would look something like this:
     struct PredicateVisitor {
     virtual void visit(const AndExpr&) = 0;

@@ -45,7 +45,8 @@ namespace aion::frontend
         }
         else
         {
-            synchronize();
+            // the errors would have been printed internally.
+            return std::nullopt;
         }
 
         // advance();
@@ -80,7 +81,7 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location, "expected expression");
+            // ctxt.diagnostics.report_error(peek().location, "expected expression");
             return nullptr;
         }
 
@@ -96,7 +97,7 @@ namespace aion::frontend
             }
             else
             {
-                ctxt.diagnostics.report_error(peek().location, "expected expression");
+                // ctxt.diagnostics.report_error(peek().location, "expected expression");
                 return nullptr;
             }
         }
@@ -122,7 +123,7 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location, "expected expression");
+            // ctxt.diagnostics.report_error(peek().location, "expected expression");
             return nullptr;
         }
 
@@ -138,7 +139,7 @@ namespace aion::frontend
             }
             else
             {
-                ctxt.diagnostics.report_error(peek().location, "expected expression");
+                // ctxt.diagnostics.report_error(peek().location, "expected expression");
                 return nullptr;
             }
         }
@@ -160,7 +161,7 @@ namespace aion::frontend
             auto nested_not_predexpr = Parser::parse_predexpr_not();
             if (nested_not_predexpr == nullptr)
             {
-                ctxt.diagnostics.report_error(peek().location, "expected expression");
+                // ctxt.diagnostics.report_error(peek().location, "expected expression");
                 return nullptr;
             }
             not_predexpr->inner = std::move(nested_not_predexpr);
@@ -177,7 +178,7 @@ namespace aion::frontend
         auto lhs = parse_predexpr_primary();
         if (lhs == nullptr)
         {
-            ctxt.diagnostics.report_error(peek().location, "expected expression");
+            // ctxt.diagnostics.report_error(peek().location, "expected expression");
             return nullptr;
         }
         // checking for comparison.
@@ -221,7 +222,7 @@ namespace aion::frontend
         auto rhs = parse_predexpr_primary();
         if (rhs == nullptr)
         {
-            ctxt.diagnostics.report_error(peek().location, "expected expression");
+            // ctxt.diagnostics.report_error(peek().location, "expected expression");
             return nullptr;
         }
 
@@ -271,19 +272,37 @@ namespace aion::frontend
             literal.value = val;
             primary_predexpr->expr = std::move(literal);
         }
+        else if (peek().type == TokenType::LIT_BOOL)
+        {
+            Literal literal;
+            literal.type = core::Type::BOOL;
+            if (peek().text == "true")
+            {
+                literal.value = true;
+            }
+            else if (peek().text == "false")
+            {
+                literal.value = false;
+            }
+            else
+            {
+                ctxt.diagnostics.report_warning(peek().location, "unknown boolean expression encountered");
+            }
+            primary_predexpr->expr = std::move(literal);
+        }
         else if (peek().type == TokenType::LPAREN)
         {
             advance();
             auto predexpr = Parser::parse_predexpr();
             if (predexpr == nullptr)
             {
-                ctxt.diagnostics.report_error(peek().location, "expected expression");
+                // ctxt.diagnostics.report_error(peek().location, "expected expression");
                 return nullptr;
             }
             // advance();
             if (peek().type != TokenType::RPAREN)
             {
-                ctxt.diagnostics.report_error(peek().location, "expected ')'");
+                // ctxt.diagnostics.report_error(peek().location, "expected ')'");
                 return nullptr;
             }
             // advance();
@@ -292,6 +311,7 @@ namespace aion::frontend
         else
         {
             ctxt.diagnostics.report_error(peek().location, "unknown expression encountered");
+            advance();
             return nullptr;
         }
         advance();

@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
   if (compilation_context.options.ir == core::IR::AST)
   {
     compilation_context.log(1, std::format("Dumping ast to {}", compilation_context.options.output_filename));
-    frontend::dump_ast(*ast);
+    frontend::dump_ast(*ast, compilation_context);
     compilation_context.log(1, "Dumped ast");
   }
 

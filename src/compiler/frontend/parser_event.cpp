@@ -37,6 +37,10 @@ namespace aion::frontend
         {
             field.type = core::Type::STRING;
         }
+        else if (type_text == "bool")
+        {
+            field.type = core::Type::BOOL;
+        }
         else
         {
             ctxt.diagnostics.report_error(peek().location,"unknown data type");
