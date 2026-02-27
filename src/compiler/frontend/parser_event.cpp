@@ -23,19 +23,19 @@ namespace aion::frontend
         std::string_view type_text = peek().text;
         if (type_text == "int")
         {
-            field.type = Type::INT;
+            field.type = core::Type::INT;
         }
         else if (type_text == "float")
         {
-            field.type = Type::FLOAT;
+            field.type = core::Type::FLOAT;
         }
         else if (type_text == "char")
         {
-            field.type = Type::CHAR;
+            field.type = core::Type::CHAR;
         }
         else if (type_text == "string")
         {
-            field.type = Type::STRING;
+            field.type = core::Type::STRING;
         }
         else
         {

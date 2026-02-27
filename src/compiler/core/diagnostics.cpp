@@ -42,12 +42,24 @@ namespace aion::core
     void Diagnostics::report_error(const SourceLocation& location, std::string_view msg)
     {
         ++error_count;
+
+        if (location.line == std::numeric_limits<std::size_t>::max())
+        {
+            std::cerr << std::format("{} [ERROR] {}\n", aion::core::RED, aion::core::RESET, msg);
+            return;
+        }
         std::cerr << std::format("{}[ERROR]{} {}:{} {}\n", aion::core::RED, aion::core::RESET, location.line, location.column, msg);
         print_snippet(location);
     }
     void Diagnostics::report_warning(const SourceLocation& location, std::string_view msg)
     {
         ++warning_count;
+
+        if (location.line == std::numeric_limits<std::size_t>::max())
+        {
+            std::cerr << std::format("{} [WARNING] {}\n", aion::core::YELLOW, aion::core::RESET, msg);
+            return;
+        }
         std::cerr << std::format("{} [WARNING] {}:{}: {}\n", aion::core::YELLOW, aion::core::RESET, location.line, location.column, msg);
         print_snippet(location);
     }

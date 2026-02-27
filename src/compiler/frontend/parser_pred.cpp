@@ -242,21 +242,21 @@ namespace aion::frontend
         else if (peek().type == TokenType::LIT_CHAR)
         {
             Literal literal;
-            literal.type = Type::CHAR;
+            literal.type = core::Type::CHAR;
             literal.value = (peek().text[0]);
             primary_predexpr->expr = std::move(literal);
         }
         else if (peek().type == TokenType::LIT_STRING)
         {
             Literal literal;
-            literal.type = Type::STRING;
+            literal.type = core::Type::STRING;
             literal.value = (peek().text);
             primary_predexpr->expr = std::move(literal);
         }
         else if (peek().type == TokenType::LIT_FLOAT)
         {
             Literal literal;
-            literal.type = Type::FLOAT;
+            literal.type = core::Type::FLOAT;
             float val;
             std::from_chars(peek().text.data(), peek().text.data() + peek().text.size(), val);
             literal.value = val;
@@ -265,7 +265,7 @@ namespace aion::frontend
         else if (peek().type == TokenType::LIT_INTEGER)
         {
             Literal literal;
-            literal.type = Type::INT;
+            literal.type = core::Type::INT;
             int val;
             std::from_chars(peek().text.data(), peek().text.data() + peek().text.size(), val, 10);
             literal.value = val;

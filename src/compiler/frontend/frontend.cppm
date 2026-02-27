@@ -9,3 +9,4 @@ export module aion.frontend;
 export import :lexer;
 export import :parser;
 export import :ast;
+export import :symbol_table;

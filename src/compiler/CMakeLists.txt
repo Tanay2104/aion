@@ -5,7 +5,6 @@ target_sources(aion_core PUBLIC
         FILES
             core/core.cppm
             core/config.cppm
-            core/symbol_table.cppm
             core/diagnostics.cppm
             core/common.cppm
         PRIVATE
@@ -21,6 +20,7 @@ target_sources(aion_frontend PUBLIC
             frontend/ast.cppm
             frontend/lexer.cppm
             frontend/parser.cppm
+            frontend/symbol_table.cppm
         PRIVATE
             frontend/lexer.cpp
             frontend/parser.cpp
@@ -28,6 +28,7 @@ target_sources(aion_frontend PUBLIC
             frontend/parser_pred.cpp
             frontend/parser_regex.cpp
             frontend/ast_dump.cpp
+            frontend/symbol_table.cpp
 )
 # Frontend depends on Core types
 target_link_libraries(aion_frontend PUBLIC aion_core aion_utils)

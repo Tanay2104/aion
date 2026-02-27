@@ -11,4 +11,19 @@ export namespace aion::core
     constexpr std::string RESET = "\033[0m";
     constexpr std::string BOLD = "\033[1m";
 
+
+    enum class Type : std::uint8_t
+    {
+        INT,
+        CHAR,
+        FLOAT,
+        STRING,
+        BOOL,
+    };
+
+    // Critical note: We assume that string size cannot exceed MAX_STRING_SIZE
+    // this is mainly based on the assumption that usually small strings are checked.
+    // And if large checks need to be done then Aion isn't really the most apt choice.
+    // We encourage only int, float, char usage.
+    constexpr std::uint32_t MAX_STRING_SIZE = 64; //  in bytes
 }

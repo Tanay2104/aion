@@ -371,7 +371,7 @@ void Lexer::dump_tokens(std::string_view filename) {
   std::ofstream output_file;
   output_file.open(filename);
   std::ostream &out =
-      ((compile_context.options.output_filename == "aion_out") ? std::cout
+      ((compile_context.options.output_filename == core::DEFAULT_NAME) ? std::cout
                                                                : output_file);
   // If the name is default then dump on std::cout.
   for (Token &token : tokens) {

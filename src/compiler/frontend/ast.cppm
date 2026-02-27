@@ -4,21 +4,17 @@
  * This is the intermediate representation between parser and semantic analysis
  */
 export module aion.frontend:ast;
+
 import std;
+import aion.core;
+
 export namespace aion::frontend {
-    enum class Type : std::uint8_t
-    {
-        INT,
-        CHAR,
-        FLOAT,
-        STRING
-    };
     constexpr std::array<std::string, 4> type_string =
         { "INT", "CHAR", "FLOAT", "STRING" };
 
     struct FieldDecl
     {
-        Type type{};
+        core::Type type{};
         std::string_view name{};
     };
     struct EventDecl
@@ -58,7 +54,7 @@ export namespace aion::frontend {
     };
     struct Literal
     {
-        Type type{};
+        core::Type type{};
         std::variant<int, float, char, std::string_view> value{};
     };
     struct PrimaryPredExpr : PredExpr

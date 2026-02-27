@@ -70,4 +70,8 @@ int main(int argc, char** argv) {
     frontend::dump_ast(*ast);
     compilation_context.log(1, "Dumped ast");
   }
+
+  compilation_context.log(2, "Creating symbol table");
+  frontend::SymbolTable symbol_table = frontend::generate_symbol_table(*ast, compilation_context);
+  compilation_context.log(2, "Generated initial symbol table");
 }

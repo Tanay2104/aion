@@ -6,7 +6,6 @@ export module aion.core:config;
 
 import :diagnostics;
 import :common;
-import :symbol_table;
 import std;
 
 export namespace aion {
@@ -30,12 +29,14 @@ enum class Verbosity : std::uint8_t {
   THIRD_LEVEL = 3,
 };
 
+  constexpr std::string DEFAULT_NAME ="aion.out";
+
 struct Options {
   Arch arch = Arch::AVX2;
   OptimLevel optim_level = OptimLevel::NONE;
   IR ir = IR::NONE;
   Verbosity verbosity = Verbosity::FIRST_LEVEL;
-  std::string output_filename = "aion.out";
+  std::string output_filename = DEFAULT_NAME;
 };
 
 struct CompilationContext {
@@ -44,7 +45,6 @@ struct CompilationContext {
 
   // Session-wide objects
   core::Diagnostics diagnostics{};
-  core::SymbolTable symbols{};
 
   // Helper for verbosity
   void log(int level, std::string_view msg, std::string_view color = aion::core::GREEN) const {

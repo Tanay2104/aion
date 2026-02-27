@@ -8,6 +8,10 @@ module aion.frontend;
 import std;
 import aion.core;
 
+// NOTE: Parser code contains many "expectations" wherein we check for types of next
+// tokens, etc. Maybe make an expect() method which also logs errors in case of errors,
+// instead of explicity if statements?
+
 namespace  aion::frontend
 {
     Token Parser::advance()

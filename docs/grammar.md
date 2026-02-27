@@ -20,7 +20,7 @@ type
     → "int"
     | "char"
     | "float"
-    | "bool"
+    | "string"
 ```
 
 ## Grammar for the predicate language
