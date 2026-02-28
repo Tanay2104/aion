@@ -37,7 +37,13 @@ export namespace aion::frontend {
   struct RegexMetadata
   {
     const RegexDecl* ast_node{}; //  non-owning const ptr to node.
-    std::uint8_t root_alphabet_id{};
+    std::uint8_t root_alphabet_id{}; // maybe don't need cause assumption we start always at 0?
+    std::unordered_map<const RegexExpr*, std::uint16_t> node_to_pos_ids{}; // map from each predicate/reghex to it's pos id.
+    // Note that we are mapping address instead of name since each predicate can occur multiple times in the
+    // regex, and they require different id's in the glushkov construction. An alternative can be to directly
+    // make an "annotated" ast wherein we keep a field in the base struct.
+    std::unordered_map< std::uint16_t, std::string> pos_ids_to_names{}; // map from each predicate/regex to it's pos id.
+    // Also we use uint16_t so that later we can extend, and provide warning in case regex is too large.
   };
 
   struct Symbol
@@ -58,7 +64,10 @@ export namespace aion::frontend {
 
     // lookup a symbol by name. return nullptr if not found.
     [[nodiscard]] const Symbol* resolve(std::string_view name) const;
+
+    [[nodiscard]] Symbol* mod_resolve(std::string_view name);
   };
 
   SymbolTable generate_symbol_table(const AionFile& ast, core::CompilationContext &ctxt);
+
 }

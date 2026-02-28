@@ -26,4 +26,12 @@ export namespace aion::core
     // And if large checks need to be done then Aion isn't really the most apt choice.
     // We encourage only int, float, char usage.
     constexpr std::uint32_t MAX_STRING_SIZE = 64; //  in bytes
+
+    // Note: Currently we are using only uint64 to represent the states. This implie
+    // a maximum of 64 states. Adding AVX2 will increase this to 128 states, or 256
+    // if we solve the lane crossing problems correctly. Further inclusion of multiple
+    // registers and a virtual register interface, perhaps implemented with intelligent
+    // graph partitioning, allows this number to increase even more. For many applications,
+    // even 64 can be sufficient.
+    constexpr std::uint16_t MAX_STATES = 63;
 }

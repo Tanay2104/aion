@@ -36,9 +36,13 @@ target_link_libraries(aion_frontend PUBLIC aion_core aion_utils)
 # --- 3. ANALYSIS (Level 2) ---
 add_library(aion_analysis STATIC)
 target_sources(aion_analysis PUBLIC
-    FILE_SET CXX_MODULES FILES
-        analysis/analysis.cppm
-        analysis/minimizer.cppm
+    FILE_SET CXX_MODULES
+        FILES
+            analysis/analysis.cppm
+            analysis/minimizer.cppm
+            analysis/alphabet.cppm
+        PRIVATE
+            analysis/alphabet.cpp
 )
 # Analysis depends on Frontend (AST)
 target_link_libraries(aion_analysis PUBLIC aion_frontend)

@@ -24,6 +24,15 @@ namespace aion::frontend
         return nullptr;
     }
 
+    [[nodiscard]] Symbol* SymbolTable::mod_resolve(std::string_view name)
+    {
+        if (symbols.contains(name))
+        {
+            return &symbols.at(name);
+        }
+        return nullptr;
+    }
+
     SymbolTable generate_symbol_table(const AionFile& ast, core::CompilationContext &ctxt)
     {
         SymbolTable symbol_table;

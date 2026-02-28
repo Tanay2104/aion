@@ -15,6 +15,7 @@
 import aion.utils;
 import aion.frontend;
 import aion.core;
+import aion.analysis;
 import std;
 
 int main(int argc, char** argv) {
@@ -74,4 +75,9 @@ int main(int argc, char** argv) {
   compilation_context.log(2, "Creating symbol table");
   frontend::SymbolTable symbol_table = frontend::generate_symbol_table(*ast, compilation_context);
   compilation_context.log(2, "Generated initial symbol table");
+
+  compilation_context.log(2, "Mapping Alphabet id's");
+  analysis::fill_pos_ids(symbol_table, *ast, compilation_context);
+  compilation_context.log(2, "Alphabet analysis complete");
+
 }
