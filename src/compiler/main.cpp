@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
   frontend::Parser parser(tokens, compilation_context);
   auto ast = parser.parse();
   // NOTE: ast existance does not imply ast validity.
-  if (compilation_context.diagnostics.get_error_count() > aion::core::MAX_ERROR_COUNT)
+  if (compilation_context.diagnostics.get_error_count() > core::MAX_ERROR_COUNT)
   {
     compilation_context.log(1, "Too many errors, stopping now", aion::core::RED);
     std::exit(1);
@@ -72,6 +72,7 @@ int main(int argc, char** argv) {
     compilation_context.log(1, "Dumped ast");
   }
 
+  // Symbol table stuff!
   compilation_context.log(2, "Creating symbol table");
   frontend::SymbolTable symbol_table = frontend::generate_symbol_table(*ast, compilation_context);
   compilation_context.log(2, "Generated initial symbol table");
