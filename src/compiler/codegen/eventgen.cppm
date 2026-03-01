@@ -1,4 +1,4 @@
-/* event_emitter.cppm
+/* eventgen.cppm
  * Function declaration for event codegen.
  */
 

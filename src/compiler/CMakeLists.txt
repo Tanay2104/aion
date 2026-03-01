@@ -70,9 +70,11 @@ target_sources(aion_codegen PUBLIC
             codegen/codegen.cppm
             codegen/emitter.cppm
             codegen/eventgen.cppm
+            codegen/predicategen.cppm
         PRIVATE
             codegen/eventgen.cpp
             codegen/emitter.cpp
+            codegen/predicategen.cpp
 )
 target_link_libraries(aion_codegen PUBLIC aion_automata)
 

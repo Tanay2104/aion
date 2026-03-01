@@ -98,6 +98,9 @@ int main(int argc, char** argv) {
   compilation_context.log(2, "Emitting event");
   codegen::emit_event(ast->event, emitter);
 
+  compilation_context.log(2, "Emitting predicates");
+  codegen::emit_predicates(*ast, symbol_table, emitter, compilation_context);
+
   emitter.dump(compilation_context.options.output_filename + ".h");
   compilation_context.log(1, "Finished codegen");
 }

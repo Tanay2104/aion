@@ -1,4 +1,4 @@
-/* event_emitter.cpp
+/* eventgen.cpp
  * Code for emitting the event struct in a C header file.
  */
 
@@ -11,7 +11,7 @@ namespace aion::codegen
 {
     void emit_event(const frontend::EventDecl& event_decl, CEmitter& emitter)
     {
-        emitter.emit_block_start("struct alignas(32) event");
+        emitter.emit_block_start("struct alignas(32) Event");
         for (const frontend::FieldDecl& field_decl : event_decl.fields)
         {
             emitter.emit_line(std::format("{} {};", frontend::type_string[static_cast<std::size_t>(field_decl.type)], field_decl.name));
