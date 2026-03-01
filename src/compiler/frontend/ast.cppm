@@ -10,7 +10,7 @@ import aion.core;
 
 export namespace aion::frontend {
     constexpr std::array<std::string, 5> type_string =
-        { "INT", "CHAR", "FLOAT", "STRING" , "BOOL"};
+        { "int", "char", "float", "string" , "bool"};
 
 
     struct FieldDecl

@@ -50,11 +50,14 @@ target_link_libraries(aion_analysis PUBLIC aion_frontend)
 # --- 4. AUTOMATA (Level 3) ---
 add_library(aion_automata STATIC)
 target_sources(aion_automata PUBLIC
-    FILE_SET CXX_MODULES FILES
-        automata/automata.cppm
-        automata/nfa.cppm
-        automata/glushkov.cppm
-        automata/partitioner.cppm
+    FILE_SET CXX_MODULES
+        FILES
+            automata/automata.cppm
+            automata/nfa.cppm
+            automata/glushkov.cppm
+            automata/partitioner.cppm
+        PRIVATE
+            automata/glushkov.cpp
 )
 # Automata uses Analysis results
 target_link_libraries(aion_automata PUBLIC aion_analysis)
@@ -62,9 +65,14 @@ target_link_libraries(aion_automata PUBLIC aion_analysis)
 # --- 5. CODEGEN (Level 4) ---
 add_library(aion_codegen STATIC)
 target_sources(aion_codegen PUBLIC
-    FILE_SET CXX_MODULES FILES
-        codegen/codegen.cppm
-        codegen/cpp_emitter.cppm
+    FILE_SET CXX_MODULES
+        FILES
+            codegen/codegen.cppm
+            codegen/emitter.cppm
+            codegen/eventgen.cppm
+        PRIVATE
+            codegen/eventgen.cpp
+            codegen/emitter.cpp
 )
 target_link_libraries(aion_codegen PUBLIC aion_automata)
 

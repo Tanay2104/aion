@@ -29,7 +29,7 @@ enum class Verbosity : std::uint8_t {
   THIRD_LEVEL = 3,
 };
 
-  constexpr std::string DEFAULT_NAME ="aion.out";
+  constexpr std::string DEFAULT_NAME ="aion_out";
 
 struct Options {
   Arch arch = Arch::AVX2;

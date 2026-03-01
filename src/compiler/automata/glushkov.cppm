@@ -6,9 +6,13 @@ export module aion.automata:glushkov;
 
 import std;
 import aion.frontend;
+import aion.core;
+import :nfa;
 
 namespace aion::automata
 {
+    export std::unordered_map<std::string_view, NFA_64> convert_to_nfa_64(const frontend::AionFile& ast, const frontend::SymbolTable& table, const core::CompilationContext& ctxt);
+
     class GlushkovVisitor : public frontend::RegexVisitor {
     private:
         struct GlushkovFragment {
@@ -27,7 +31,7 @@ namespace aion::automata
 
         void add_character(const frontend::RegexExpr* node);
     public:
-        explicit GlushkovVisitor(frontend::RegexMetadata& _meta, core::CompilationContext& _ctxt);
+        explicit GlushkovVisitor(const frontend::RegexMetadata& _meta, const core::CompilationContext& _ctxt);
 
         void visit(const frontend::RegexPrimary& node) override;
         void visit(const frontend::RegexUnion& node) override;
@@ -35,5 +39,7 @@ namespace aion::automata
         void visit(const frontend::RegexStar& node) override;
         void visit(const frontend::RegexRefExpr& node) override;
         void visit(const frontend::RegexConcat& node) override;
+
+        NFA_64 convert_to_NFA_64();
     };
 };

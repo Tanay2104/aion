@@ -16,6 +16,8 @@ import aion.utils;
 import aion.frontend;
 import aion.core;
 import aion.analysis;
+import aion.automata;
+import aion.codegen;
 import std;
 
 int main(int argc, char** argv) {
@@ -72,6 +74,7 @@ int main(int argc, char** argv) {
     compilation_context.log(1, "Dumped ast");
   }
 
+  compilation_context.log(1, "Analysing AST");
   // Symbol table stuff!
   compilation_context.log(2, "Creating symbol table");
   frontend::SymbolTable symbol_table = frontend::generate_symbol_table(*ast, compilation_context);
@@ -81,4 +84,20 @@ int main(int argc, char** argv) {
   analysis::fill_pos_ids(symbol_table, *ast, compilation_context);
   compilation_context.log(2, "Alphabet analysis complete");
 
+  // Finally making NFA's
+  compilation_context.log(2, "Starting NFA generation");
+  auto all_nfa = automata::convert_to_nfa_64(*ast, symbol_table, compilation_context);
+  compilation_context.log(2, "Completed NFA generation");
+
+  compilation_context.log(1, "AST complete");
+
+  compilation_context.log(1, "Starting codegen");
+  codegen::CEmitter emitter;
+  codegen::emit_headers(emitter);
+
+  compilation_context.log(2, "Emitting event");
+  codegen::emit_event(ast->event, emitter);
+
+  emitter.dump(compilation_context.options.output_filename + ".h");
+  compilation_context.log(1, "Finished codegen");
 }

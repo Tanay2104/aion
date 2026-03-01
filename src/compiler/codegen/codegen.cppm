@@ -2,3 +2,6 @@
  * Exports the emitter
  */
 export module aion.codegen;
+
+export import :cemitter;
+export import :eventgen;
