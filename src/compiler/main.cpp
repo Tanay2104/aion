@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
 
   // Finally making NFA's
   compilation_context.log(2, "Starting NFA generation");
-  auto all_nfa = automata::convert_to_nfa_64(*ast, symbol_table, compilation_context);
+  auto all_nfa = automata::convert_to_generic_nfa(*ast, symbol_table, compilation_context);
   compilation_context.log(2, "Completed NFA generation");
 
   compilation_context.log(1, "AST complete");
@@ -101,6 +101,10 @@ int main(int argc, char** argv) {
   compilation_context.log(2, "Emitting predicates");
   codegen::emit_predicates(*ast, symbol_table, emitter, compilation_context);
 
-  emitter.dump(compilation_context.options.output_filename + ".h");
+  compilation_context.log(2, "Emitting regex engines");
+  codegen::emit_regex_engines(*ast, symbol_table, emitter, compilation_context, all_nfa);
+
+  codegen::emit_footers(emitter);
+  emitter.dump(compilation_context.options.output_filename + ".hpp");
   compilation_context.log(1, "Finished codegen");
 }

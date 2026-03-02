@@ -138,6 +138,26 @@ bool Lexer::is_lit_char() {
   }
   return false;
 }
+  bool Lexer::is_lit_char_2()
+{
+
+  if (peek() != '\'') {
+    return false;
+  }
+  advance();
+  if (!(is_lit_char())) {
+    return false;
+  }
+  advance();
+  if (peek() != '\'') {
+    return false;
+  }
+  advance();
+  if (current == start) {
+    return false;
+  }
+  return true;
+}
   bool Lexer::is_lit_bool()
 {
   if (std::string_view(source).substr(start,4) == "true")
@@ -318,11 +338,10 @@ void Lexer::scan_token() {
       advance(5);
       add_token(TokenType::KW_EVENT);
     }
-    // else if (is_lit_char()) {
-    //   advance();
-    //   // std::println("Lit character found");
-    //   add_token(TokenType::LIT_CHAR);
-    // }
+    else if (is_lit_char_2()) {
+      // std::println("Lit character found");
+      add_token(TokenType::LIT_CHAR);
+    }
     else if (is_lit_bool()) {
       add_token(TokenType::LIT_BOOL);
     } else if (is_lit_string()) {

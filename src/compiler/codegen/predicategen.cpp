@@ -39,10 +39,10 @@ namespace aion::codegen
     void PredicateGenVisitor::visit(const frontend::AndPredExpr& and_pred_expr)
     {
         std::size_t num_terms = and_pred_expr.terms.size();
-        for (const auto& term : and_pred_expr.terms)
+        for (std::size_t i = num_terms; i > 0; --i)
         {
 
-            term->accept(*this);
+            and_pred_expr.terms[i-1]->accept(*this);
         }
         // Now the stack will contain num_term predicates
         // We need to && them.
@@ -67,9 +67,9 @@ namespace aion::codegen
     void PredicateGenVisitor::visit(const frontend::OrPredExpr& or_pred_expr)
     {
         std::size_t num_terms = or_pred_expr.terms.size();
-        for (const auto& term : or_pred_expr.terms)
+        for (std::size_t i = num_terms; i > 0; --i)
         {
-            term->accept(*this);
+            or_pred_expr.terms[i-1]->accept(*this);
         }
         // Now the stack will contain num_term predicates
         // We need to "||" them.
@@ -169,10 +169,10 @@ namespace aion::codegen
                         primary_expr += std::to_string(std::get<float>(arg.value));
                         break;
                     case core::Type::CHAR:
-                        primary_expr += "\"" + std::string{std::get<char>(arg.value)} + "\"";
+                        primary_expr += "'" + std::string{std::get<char>(arg.value)} + "'";
                         break;
                     case core::Type::STRING:
-                        primary_expr += "'" + std::string(std::get<std::string_view>(arg.value)) + "'";
+                        primary_expr += "\"" + std::string(std::get<std::string_view>(arg.value)) + "\"";
                         break;
                 }
             }
@@ -187,7 +187,7 @@ namespace aion::codegen
                 // This pushed something onto a stack.
                 std::string refexpr = stack.top();
                 stack.pop();
-                primary_expr += "(" + refexpr + ")";
+                primary_expr += refexpr;
             }
 
         }, primary_pred_expr.expr);
@@ -220,7 +220,7 @@ namespace aion::codegen
         }
         else if (symbol->kind == frontend::SymbolKind::EVENT_FIELD)
         {
-            std::string refexpr = event_name + "->" + std::string(pred_ref_expr.name);
+            std::string refexpr = event_name + "." + std::string(pred_ref_expr.name);
             stack.push(refexpr);
         }
     }

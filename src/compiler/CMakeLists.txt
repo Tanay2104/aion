@@ -71,15 +71,18 @@ target_sources(aion_codegen PUBLIC
             codegen/emitter.cppm
             codegen/eventgen.cppm
             codegen/predicategen.cppm
+            codegen/regexgen.cppm
         PRIVATE
             codegen/eventgen.cpp
             codegen/emitter.cpp
             codegen/predicategen.cpp
+            codegen/regexgen.cpp
 )
 target_link_libraries(aion_codegen PUBLIC aion_automata)
 
 # --- THE EXECUTABLE ---
 add_executable(aionc main.cpp)
 
-# Link the executable to the highest level lib (or all if needed)
+# Link the executable to the highest level lib.
+target_include_directories(aionc PRIVATE runtime)
 target_link_libraries(aionc PRIVATE aion_codegen)

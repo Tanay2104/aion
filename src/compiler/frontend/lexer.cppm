@@ -98,6 +98,7 @@ private:
   bool is_lit_digit();
   bool is_lit_int();
   bool is_lit_char();
+  bool is_lit_char_2();
   bool is_lit_string();
   bool is_lit_float();
   bool is_lit_bool();

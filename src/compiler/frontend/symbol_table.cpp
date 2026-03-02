@@ -49,21 +49,28 @@ namespace aion::frontend
                 case core::Type::BOOL:
                     details.size_in_bytes = 1;
                     offset += 1;
+                    break;
                 case core::Type::CHAR:
                     details.size_in_bytes = 1;
                     offset += 1;
+                    break;
                 case core::Type::INT:
                     details.size_in_bytes = 4;
                     offset += 4;
+                    break;
                 case core::Type::FLOAT:
                     details.size_in_bytes = 4;
                     offset += 4;
+                    break;
                 case core::Type::STRING:
                         details.size_in_bytes = core::MAX_STRING_SIZE;
                         offset += core::MAX_STRING_SIZE;
+                    break;
                 default:
                     // hopefully nothing happens here.
                     // parser would have noticed otherwise.
+                    ctxt.diagnostics.report_internal_error("Generating symbol table for unknown type");
+                    break;
             }
 
             bool success = symbol_table.define({

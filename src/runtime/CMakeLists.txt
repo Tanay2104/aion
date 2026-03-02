@@ -5,7 +5,6 @@ target_sources(aion_runtime
     FILE_SET CXX_MODULES 
     FILES
         runtime.cppm
-        backend_avx2.cppm
 )
 
 # Enable AVX2 specific instructions for this target

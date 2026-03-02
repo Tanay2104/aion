@@ -38,7 +38,7 @@ export namespace aion::frontend {
   {
     const RegexDecl* ast_node{}; //  non-owning const ptr to node.
     std::uint8_t root_alphabet_id{}; // maybe don't need cause assumption we start always at 0?
-    std::unordered_map<const RegexExpr*, std::uint16_t> node_to_pos_ids{}; // map from each predicate/reghex to it's pos id.
+    std::unordered_map<const RegexExpr*, std::uint16_t> node_to_pos_ids{}; // map from each predicate/regex to it's pos id.
     // Note that we are mapping address instead of name since each predicate can occur multiple times in the
     // regex, and they require different id's in the glushkov construction. An alternative can be to directly
     // make an "annotated" ast wherein we keep a field in the base struct.

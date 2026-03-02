@@ -12,7 +12,7 @@ export namespace aion {
 namespace core {
 using namespace aion;
 
-enum class Arch : std::uint8_t { AVX2, AVX512, SSE42, NEON };
+enum class Arch : std::uint8_t {SCALAR64, AVX2, AVX512, SSE42, NEON };
 enum class OptimLevel : std::uint8_t {
   NONE,
   FIRST_LEVEL,
@@ -32,7 +32,7 @@ enum class Verbosity : std::uint8_t {
   constexpr std::string DEFAULT_NAME ="aion_out";
 
 struct Options {
-  Arch arch = Arch::AVX2;
+  Arch arch = Arch::SCALAR64;
   OptimLevel optim_level = OptimLevel::NONE;
   IR ir = IR::NONE;
   Verbosity verbosity = Verbosity::FIRST_LEVEL;

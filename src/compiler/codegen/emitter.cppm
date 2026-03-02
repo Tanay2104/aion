@@ -23,5 +23,7 @@ namespace  aion::codegen
     };
 
     export void emit_headers(CEmitter& emitter);
+    export void emit_footers(CEmitter& emitter);
+
 
 }
