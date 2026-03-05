@@ -23,6 +23,8 @@ std::string help_string = "Aion is a symbolic regex compiler designed for Comple
                           "\t\t Default: -V1. --verbose results in -V2 verbosity\n"
                           "\t -e, --emit [TOKENS, AST, NFA]\n"
                           "\t\t Dump intermediate TOKENS (dump the lexer output), AST (pretty-print the AST), NFA (in DOT format)\n"
+                          "\t -nj, --nojitter\n"
+                         "\t\t Codegen produces state machine which has no jitter and O(n^2) complexity but may be slower on average\n"
                           "For more details, please see examples and docs.\n";
 
 std::string current_version = "0.1.0\n";
@@ -77,6 +79,11 @@ namespace utils {
         std::exit(1);
       }
     }
+    if (input.cmdOptionExists("-nj") || input.cmdOptionExists("--nojitter"))
+    {
+      options.jitter = false;
+    }
+
     if (input.cmdOptionExists("-e") || input.cmdOptionExists("--emit")) {
       std::string ir = input.getCmdOption("-e");
       if (ir.empty()) {

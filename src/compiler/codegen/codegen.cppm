@@ -9,6 +9,9 @@ export import :cemitter;
 export import :eventgen;
 export import :predicategen;
 export import :regexgen;
+export import :avx2;
+export import :scalar;
+export import :codegenstrategy;
 
 export namespace aion::codegen
 {

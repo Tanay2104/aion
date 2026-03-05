@@ -116,7 +116,6 @@ namespace aion::automata
     }
 
 
-// BUG: A . B* . C doesn't work.
     void GlushkovVisitor::visit(const frontend::RegexConcat& node)
     {
         const std::uint16_t num_concats = static_cast<std::uint16_t>(node.sequence.size());
@@ -183,6 +182,13 @@ namespace aion::automata
             for (std::uint16_t end : fragments[i].last)
             {
                 follow[end].insert(fragments[i+1].first.begin(), fragments[i+1].first.end());
+                for (std::uint16_t j = i+2; j < num_concats && fragments[j].nullable; ++j)
+                {
+                    // i will always  be followed by i+1 but may be followed by others if there
+                    // are nullable chars in between.
+                    follow[end].insert(fragments[j].first.begin(), fragments[j].first.end());
+                }
+
             }
         }
 

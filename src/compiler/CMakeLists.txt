@@ -72,11 +72,15 @@ target_sources(aion_codegen PUBLIC
             codegen/eventgen.cppm
             codegen/predicategen.cppm
             codegen/regexgen.cppm
+            codegen/codegenstrategy.cppm
+            codegen/scalar.cppm
+            codegen/avx2.cppm
         PRIVATE
             codegen/eventgen.cpp
             codegen/emitter.cpp
             codegen/predicategen.cpp
             codegen/regexgen.cpp
+            codegen/scalar.cpp
 )
 target_link_libraries(aion_codegen PUBLIC aion_automata)
 

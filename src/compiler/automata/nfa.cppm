@@ -2,8 +2,6 @@
  * The data structures for the machine
  */
 module;
-#include "../../runtime/bitsets.hpp"
-#include "../../runtime/concepts.hpp"
 export module aion.automata:nfa;
 
 import std;
@@ -19,18 +17,16 @@ namespace aion::automata
         std::unordered_map<std::uint16_t, std::unordered_set<std::uint16_t>> follow;
     };
 
-    export template <runtime::BitSet bitset>
-    struct HardwareNFA
+    export struct NFA_64
     {
         std::uint16_t num_states{};
         bool nullable{};
-        bitset::type first;
-        bitset::type last;
-        std::array<typename bitset::type, bitset::bit_count> follow{};
+        std::uint64_t first{};
+        std::uint64_t last{};
+        std::array<std::uint64_t , 64> follow{};
     };
 
-    export template <runtime::BitSet bitset>
-    HardwareNFA<bitset> convert_to_nfa(const Generic_NFA& nfa) {
+    /*HardwareNFA<bitset> convert_to_nfa_64(const Generic_NFA& nfa) {
         HardwareNFA<bitset> nfa_64;
         nfa_64.nullable = nfa.nullable;
 
@@ -56,5 +52,5 @@ namespace aion::automata
         }
 
         return nfa_64;
-    }
+    }*/
 };

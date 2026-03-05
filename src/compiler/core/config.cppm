@@ -37,6 +37,7 @@ struct Options {
   IR ir = IR::NONE;
   Verbosity verbosity = Verbosity::FIRST_LEVEL;
   std::string output_filename = DEFAULT_NAME;
+  bool jitter = true;
 };
 
 struct CompilationContext {
