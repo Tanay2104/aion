@@ -31,3 +31,20 @@ target_link_libraries(aion_unit_tests
 )
 
 gtest_discover_tests(aion_unit_tests NO_PRETTY_VALUES TRUE)
+
+add_executable(aion_contract_tests
+    contract/contract_pipeline_tests.cpp
+    contract/contract_dump_tests.cpp
+    contract/contract_cli_logging_tests.cpp
+)
+
+target_link_libraries(aion_contract_tests
+    PRIVATE
+        aion_utils
+        aion_frontend
+        aion_analysis
+        aion_automata
+        GTest::gtest_main
+)
+
+gtest_discover_tests(aion_contract_tests NO_PRETTY_VALUES TRUE)
