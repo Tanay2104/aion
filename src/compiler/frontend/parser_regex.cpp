@@ -25,6 +25,7 @@ namespace aion::frontend
             return std::nullopt;
         }
         regex_decl.name = peek().text;
+        ctxt.log(3, std::format("[Parse] Parsing regex '{}'", regex_decl.name));
         // std::println("regex name = {}", regex_decl.name);
         advance();
 
@@ -39,7 +40,7 @@ namespace aion::frontend
         if (regexpr != nullptr)
         {
             regex_decl.expr = std::move(regexpr);
-            ctxt.log(3, std::format("Found regex declaration: name {}", regex_decl.name));
+            ctxt.log(3, std::format("[Parse] regex AST built for '{}'", regex_decl.name));
         }
         else
         {
@@ -53,7 +54,7 @@ namespace aion::frontend
         }
         advance();
 
-        ctxt.log(3, "Found complete regex declaration");
+        ctxt.log(3, std::format("[Parse] Regex '{}' complete", regex_decl.name));
         return regex_decl;
     }
 

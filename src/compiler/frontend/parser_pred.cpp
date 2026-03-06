@@ -27,6 +27,7 @@ namespace aion::frontend
         }
 
         pred_decl.name = peek().text;
+        ctxt.log(3, std::format("[Parse] Parsing predicate '{}'", pred_decl.name));
         advance();
 
         if (peek().type != TokenType::EQUALS)
@@ -41,7 +42,7 @@ namespace aion::frontend
         if (predexpr != nullptr)
         {
             pred_decl.expr = std::move(predexpr);
-            ctxt.log(3, std::format("Found pred declaration: name {}", pred_decl.name));
+            ctxt.log(3, std::format("[Parse] predicate AST built for '{}'", pred_decl.name));
         }
         else
         {
@@ -57,7 +58,7 @@ namespace aion::frontend
         }
         advance();
 
-        ctxt.log(3, "Found complete predicate declaration");
+        ctxt.log(3, std::format("[Parse] Predicate '{}' complete", pred_decl.name));
         return pred_decl;
     }
 

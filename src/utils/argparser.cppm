@@ -22,7 +22,8 @@ std::string help_string = "Aion is a symbolic regex compiler designed for Comple
                           "\t\t Prints detailed information about each compilation stage. Select verbosity by -V\n"
                           "\t\t Default: -V1. --verbose results in -V2 verbosity\n"
                           "\t -e, --emit [TOKENS, AST, NFA]\n"
-                          "\t\t Dump intermediate TOKENS (dump the lexer output), AST (pretty-print the AST), NFA (in DOT format)\n"
+                          "\t -d, --dump [TOKENS, AST, NFA]\n"
+                          "\t\t Dump intermediate TOKENS (dump the lexer output), AST (pretty-print the AST), NFA (DOT format)\n"
                           "\t -nj, --nojitter\n"
                          "\t\t Codegen produces state machine which has no jitter and O(n^2) complexity but may be slower on average\n"
                           "For more details, please see examples and docs.\n";
@@ -84,10 +85,17 @@ namespace utils {
       options.jitter = false;
     }
 
-    if (input.cmdOptionExists("-e") || input.cmdOptionExists("--emit")) {
+    if (input.cmdOptionExists("-e") || input.cmdOptionExists("--emit")
+        || input.cmdOptionExists("-d") || input.cmdOptionExists("--dump")) {
       std::string ir = input.getCmdOption("-e");
       if (ir.empty()) {
         ir = input.getCmdOption("--emit");
+      }
+      if (ir.empty()) {
+        ir = input.getCmdOption("-d");
+      }
+      if (ir.empty()) {
+        ir = input.getCmdOption("--dump");
       }
       if (ir.empty()) {
         std::println("Invalid argument");

@@ -70,6 +70,7 @@ namespace aion::frontend
    std::optional<EventDecl> Parser::parse_event_decl()
     {
         EventDecl event_decl;
+        ctxt.log(2, "[Parse] Parsing event declaration");
         if (peek().type != TokenType::KW_EVENT)
         {
             ctxt.diagnostics.report_error(peek().location,"expected keyword 'event'");
@@ -88,7 +89,9 @@ namespace aion::frontend
             if (field_decl.has_value())
             {
                 event_decl.fields.push_back(field_decl.value());
-                ctxt.log(3, std::format("Found field declaration: varname {} dtype {}", event_decl.fields.back().name,  type_string[static_cast<std::uint8_t>(event_decl.fields.back().type)]));
+                ctxt.log(3, std::format("[Parse] event field name='{}' type={}",
+                                        event_decl.fields.back().name,
+                                        type_string[static_cast<std::uint8_t>(event_decl.fields.back().type)]));
             }
             else
             {
@@ -102,7 +105,7 @@ namespace aion::frontend
             return std::nullopt;
         }
         advance();
-        ctxt.log(3, "Found complete event declaration");
+        ctxt.log(2, std::format("[Parse] Event declaration complete ({} fields)", event_decl.fields.size()));
         return event_decl;
     }
 }

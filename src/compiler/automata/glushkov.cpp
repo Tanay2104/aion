@@ -14,11 +14,20 @@ namespace aion::automata
         std::unordered_map<std::string_view, Generic_NFA> all_nfa;
         for (const frontend::RegexDecl& regex_decl : ast.regexes)
         {
-            ctxt.log(3, std::format("Making NFA for regex named {}", regex_decl.name));
+            ctxt.log(2, std::format("[NFA] Building automaton for regex '{}'", regex_decl.name));
             GlushkovVisitor visitor(std::get<frontend::RegexMetadata>(table.resolve(regex_decl.name)->details), ctxt);
             regex_decl.expr->accept(visitor);
             // The NFA generation is complete.
-            all_nfa[regex_decl.name] = visitor.get_generic_NFA();
+            const Generic_NFA nfa = visitor.get_generic_NFA();
+            std::size_t follow_edges = 0;
+            for (const auto& [from, to_set] : nfa.follow)
+            {
+                follow_edges += to_set.size();
+            }
+            ctxt.log(2, std::format("[NFA] regex='{}': states={}, nullable={}, first={}, last={}, follow_edges={}",
+                                    regex_decl.name, nfa.num_states, nfa.nullable, nfa.first.size(), nfa.last.size(), follow_edges));
+            ctxt.log(3, std::format("[NFA] regex='{}' construction complete", regex_decl.name));
+            all_nfa[regex_decl.name] = nfa;
         }
         return all_nfa;
     }

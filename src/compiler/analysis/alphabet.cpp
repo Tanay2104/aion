@@ -11,7 +11,7 @@ import std;
 namespace aion::analysis
 {
     AlphabetVisitor::AlphabetVisitor(frontend::SymbolTable& _table, std::string_view _regex, core::CompilationContext& _ctxt) :
-        current_pos_id(1), table(_table), rsymbol(table.mod_resolve(_regex)), ctxt(_ctxt)
+        current_pos_id(1), regex_name(_regex), table(_table), rsymbol(table.mod_resolve(_regex)), ctxt(_ctxt)
     {
         rsymbol = table.mod_resolve(_regex);
         if (!rsymbol) {
@@ -33,7 +33,7 @@ namespace aion::analysis
         }
         meta.pos_ids_to_names[current_pos_id] = std::string(name);
         meta.node_to_pos_ids[node] = current_pos_id;
-        ctxt.log(3, std::format("Mapped identifier {} address {} to id {}", name, static_cast<const void*>(node), current_pos_id));
+        ctxt.log(3, std::format("[Alphabet] regex='{}' symbol='{}' -> pos_id={}", regex_name, name, current_pos_id));
         current_pos_id++;
     }
 
@@ -91,8 +91,16 @@ namespace aion::analysis
     {
         for ( const frontend::RegexDecl& regex_decl : ast.regexes)
         {
+            ctxt.log(2, std::format("[Alphabet] Assigning position ids for regex '{}'", regex_decl.name));
             AlphabetVisitor alphabet_visitor(table, regex_decl.name, ctxt);
             regex_decl.expr->accept(alphabet_visitor);
+            const frontend::Symbol* rsymbol = table.resolve(regex_decl.name);
+            if (rsymbol)
+            {
+                const auto& meta = std::get<frontend::RegexMetadata>(rsymbol->details);
+                ctxt.log(2, std::format("[Alphabet] regex='{}' assigned {} position ids",
+                                        regex_decl.name, meta.pos_ids_to_names.size()));
+            }
         }
     }
 

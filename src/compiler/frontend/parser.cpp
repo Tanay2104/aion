@@ -67,6 +67,7 @@ namespace  aion::frontend
     {
         root = std::make_unique<AionFile>();
         current = 0;
+        ctxt.log(2, std::format("[Parse] Entering recursive-descent parser with {} tokens", tokens.size()));
 
         const auto& event_decl = parse_event_decl();
         if (event_decl.has_value())
@@ -75,10 +76,11 @@ namespace  aion::frontend
         }
         else
         {
-            ctxt.log(1, "No valid event found", aion::core::YELLOW);
+            ctxt.log(2, "[Parse] Event declaration invalid; synchronizing to continue", aion::core::YELLOW);
             synchronize();
         }
 
+        ctxt.log(2, "[Parse] Parsing predicate declarations");
         while (peek().type == TokenType::KW_PRED)
         {
             auto&& pred_decl = parse_pred_decl();
@@ -88,12 +90,13 @@ namespace  aion::frontend
             }
             else
             {
-                ctxt.log(1, "Invalid predicate found", aion::core::YELLOW);
+                ctxt.log(2, "[Parse] Predicate declaration invalid; synchronizing to continue", aion::core::YELLOW);
                 synchronize();
             }
             // advance();
         }
 
+        ctxt.log(2, "[Parse] Parsing regex declarations");
         while (peek().type == TokenType::KW_REGEX)
         {
             auto&& regex_decl = parse_regex_decl();
@@ -103,11 +106,14 @@ namespace  aion::frontend
             }
             else
             {
-                ctxt.log(1, "Invalid regex found", aion::core::YELLOW);
+                ctxt.log(2, "[Parse] Regex declaration invalid; synchronizing to continue", aion::core::YELLOW);
                 synchronize();
             }
         }
 
+        ctxt.log(2, std::format("[Parse] Parsed event_fields={}, predicates={}, regexes={}",
+                                root->event.fields.size(), root->predicates.size(), root->regexes.size()));
+
         return std::move(root);
     }
-};
+}; 

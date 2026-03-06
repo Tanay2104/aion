@@ -18,6 +18,7 @@ namespace aion::analysis
     private:
         bool max_states_error_given = false;
         std::uint16_t current_pos_id;
+        std::string_view regex_name;
         frontend::SymbolTable& table;
         frontend::Symbol* rsymbol;
         core::CompilationContext& ctxt;

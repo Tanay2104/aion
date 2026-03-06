@@ -39,6 +39,8 @@ namespace aion::frontend
 
 
         std::uint32_t offset = 0; // in bytes
+        std::size_t inserted_event_fields = 0;
+        std::size_t duplicate_event_fields = 0;
         for (const FieldDecl& field: ast.event.fields)
         {
             FieldMetadata details;
@@ -81,12 +83,25 @@ namespace aion::frontend
             if (!success)
             {
                 ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of field \"{}\"", field.name));
+                ++duplicate_event_fields;
+            }
+            else
+            {
+                ++inserted_event_fields;
+                ctxt.log(3, std::format("[Symbols] event field '{}' type={} offset={} size={}",
+                                        field.name,
+                                        type_string[static_cast<std::uint8_t>(field.type)],
+                                        details.offset,
+                                        details.size_in_bytes));
             }
         }
 
-        ctxt.log(3, "Filled symbol table for event");
+        ctxt.log(2, std::format("[Symbols] Event fields: {} (inserted={}, duplicates={}, total_size={} bytes)",
+                                ast.event.fields.size(), inserted_event_fields, duplicate_event_fields, offset));
 
         // now we start filling symbol table of predicates.
+        std::size_t inserted_predicates = 0;
+        std::size_t duplicate_predicates = 0;
         for (const PredDecl& pred: ast.predicates)
         {
             PredicateMetadata details;
@@ -101,11 +116,20 @@ namespace aion::frontend
             if (!success)
             {
                 ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of predicate \"{}\"", pred.name));
+                ++duplicate_predicates;
+            }
+            else
+            {
+                ++inserted_predicates;
+                ctxt.log(3, std::format("[Symbols] predicate '{}'", pred.name));
             }
         }
-        ctxt.log(3, "Filled symbol table for predicates");
+        ctxt.log(2, std::format("[Symbols] Predicates: {} (inserted={}, duplicates={})",
+                                ast.predicates.size(), inserted_predicates, duplicate_predicates));
 
         // now fill regex.
+        std::size_t inserted_regexes = 0;
+        std::size_t duplicate_regexes = 0;
         for (const RegexDecl& regex: ast.regexes)
         {
             RegexMetadata details;
@@ -119,10 +143,19 @@ namespace aion::frontend
             if (!success)
             {
                 ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of regex \"{}\"", regex.name));
+                ++duplicate_regexes;
+            }
+            else
+            {
+                ++inserted_regexes;
+                ctxt.log(3, std::format("[Symbols] regex '{}'", regex.name));
             }
         }
 
-        ctxt.log(3, "Filled symbol table for all regexes");
+        ctxt.log(2, std::format("[Symbols] Regexes: {} (inserted={}, duplicates={})",
+                                ast.regexes.size(), inserted_regexes, duplicate_regexes));
+        ctxt.log(2, std::format("[Symbols] Total inserted symbols: {}",
+                                inserted_event_fields + inserted_predicates + inserted_regexes));
 
         return symbol_table;
     }

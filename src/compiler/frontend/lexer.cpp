@@ -380,16 +380,16 @@ void Lexer::add_token(TokenType type) {
   if (type != TokenType::ERROR)
   {
     compile_context.log(
-        3, std::format("Found Token: type {} text {} line {} col {}",
-                       enum_to_str[static_cast<std::size_t>(type)], text, line,
-                       column));
+        3, std::format("[Lex] token type={} text='{}' @ {}:{}",
+                       enum_to_str[static_cast<std::size_t>(type)], text,
+                       tokens.back().location.line, tokens.back().location.column));
   }
   else
   {
     compile_context.log(
-       3, std::format("Found Token: type {} text {} line {} col {}",
-                      enum_to_str[static_cast<std::size_t>(type)], text, line,
-                      column), aion::core::YELLOW);
+       3, std::format("[Lex] token type={} text='{}' @ {}:{} (invalid token)",
+                      enum_to_str[static_cast<std::size_t>(type)], text,
+                      tokens.back().location.line, tokens.back().location.column), aion::core::YELLOW);
     // advance();
   }
 }
@@ -405,7 +405,11 @@ std::vector<Token> Lexer::tokenize() {
   }
   tokens.push_back(
       Token{TokenType::END_OF_FILE, "", SourceLocation{line, column}});
-  compile_context.log(2, std::format("Number of tokens: {}", tokens.size()));
+  const std::size_t error_tokens = static_cast<std::size_t>(std::ranges::count_if(tokens, [](const Token& token)
+  {
+      return token.type == TokenType::ERROR;
+  }));
+  compile_context.log(2, std::format("[Lex] Produced {} tokens ({} invalid, includes EOF)", tokens.size(), error_tokens));
   return tokens;
 }
 
