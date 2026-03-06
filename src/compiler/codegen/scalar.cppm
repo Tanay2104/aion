@@ -36,5 +36,6 @@ namespace aion::runtime
         void emit_state_decl() override;
         void emit_transition_kernel() override;
         void emit_acceptance_check() override;
+        void emit_reset() override;
     };
 };

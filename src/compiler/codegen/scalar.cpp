@@ -44,9 +44,9 @@ namespace aion::runtime
     {
         // This will be executed first.
         convert_to_hw_nfa();
-        if (ctxt.options.jitter == false)
+        if (ctxt.options.jitter == true)
         {
-            emitter.emit_line("#include <bit> // Need it for countr_zero() for low-jitter");
+            emitter.emit_line("#include <bit> // Need it for countr_zero() for jitter mode");
         }
         emitter.emit_block_start(std::format("class Engine_{}", regex_decl.name));
 
@@ -115,6 +115,10 @@ namespace aion::runtime
         emitter.emit_line("return ((S & last) != 0ULL);");
 
         emitter.emit_block_end(";"); // for function
+    }
+    void ScalarStrategy::emit_reset()
+    {
+        emitter.emit_line("void reset() { S = 0ULL; }");
         emitter.emit_block_end(";"); // for class
     }
 }

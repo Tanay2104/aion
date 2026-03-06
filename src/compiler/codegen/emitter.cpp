@@ -51,6 +51,7 @@ namespace  aion::codegen
 
         emitter.emit_line("#include <array>");
         emitter.emit_line("#include <cstdint>");
+        emitter.emit_line("#include <cstddef>");
 
         emitter.emit_block_start("namespace aion::runtime");
     }

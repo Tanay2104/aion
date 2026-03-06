@@ -30,6 +30,7 @@ namespace aion::codegen
             engine->emit_state_decl();
             engine->emit_transition_kernel();
             engine->emit_acceptance_check();
+            engine->emit_reset();
             emitter.emit_line("\n\n");
         }
     }

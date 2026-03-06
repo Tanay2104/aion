@@ -30,5 +30,8 @@ namespace aion::runtime
 
         // 3. The Result
         virtual void emit_acceptance_check() = 0;
+
+        // Reset function.
+        virtual void emit_reset() = 0;
     };
 };
