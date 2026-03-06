@@ -5,7 +5,7 @@
 > subset of the language, but many features are incomplete, APIs are unstable, and
 > the generated code has not yet been benchmarked. Expect breaking changes.
 
-Aion is a **compiler** that transforms a concise, domain-specific `.regex` language
+Aion is a **transpiler** that transforms a concise, domain-specific `.regex` language
 into a zero-allocation, branch-minimised C++ event-matching engine. You describe your
 event schema, define boolean predicates over its fields, and write regular expressions
 over those predicates. Aion emits a self-contained C++ header that you can drop into
@@ -436,7 +436,7 @@ Shows the canonical way to consume a generated header:
 #include "generated_engine.hpp"   // emitted by Aion
 
 int main() {
-    Engine_MyRegex engine;
+    aion::runtime::Engine_MyRegex engine;
 
     // Feed events one at a time
     for (const Event& ev : event_stream) {
@@ -482,7 +482,7 @@ build. The suite uses **Google Test**.
 compiler boundary: CLI flag combinations, AST dump format, and the full
 pipeline contract from source text to emitted code.
 
-**Semantic tests** (`tests/contract/`) verify the semantic validity of generated
+**Semantic tests** (`tests/semantic/`) verify the semantic validity of generated
 matching output. That is, if the engine correctly matched patterns. It uses two 
 independent oracles along with truth-table fixtures to verify the semantics.
 
