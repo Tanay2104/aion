@@ -72,7 +72,8 @@ char Lexer::advance(const std::size_t count) {
 [[nodiscard]] char Lexer::peek() const { return source[current]; }
 
 // return next char without increasing curr, col
-[[nodiscard]] char Lexer::peek_next() {
+[[nodiscard]] char Lexer::peek_next() const
+{
   if (current + 1 >= source.length()) {
     return '\0'; // EOF
   }
@@ -113,7 +114,8 @@ bool Lexer::is_event() {
   return false;
 }
 
-bool Lexer::is_lit_digit() {
+bool Lexer::is_lit_digit() const
+{
   if (peek() - '0' >= 0 && peek() - '0' <= 9) {
     return true;
   }
@@ -125,12 +127,12 @@ bool Lexer::is_lit_int() {
     advance();
   }
   if (current == start) {
-    // error at first.
     return false;
   }
   return true;
 }
-bool Lexer::is_lit_char() {
+bool Lexer::is_lit_char() const
+{
   if (((peek() - 'a' >= 0 && peek() - 'a' <= 26) ||
        (peek() - 'A' >= 0 && peek() - 'A' <= 26)) ||
       (peek() == '_')) {
@@ -181,6 +183,7 @@ bool Lexer::is_lit_string() {
     advance();
   }
   if (!(peek() == '\'' || peek() == '\"')) {
+    current = start;
     return false;
   }
   advance();
@@ -194,8 +197,10 @@ bool Lexer::is_lit_float() {
     advance();
   }
   if (peek() != '.') {
+    current = start;
     return false;
   }
+  advance();
   while (is_lit_digit()) {
     advance();
   }
@@ -339,7 +344,6 @@ void Lexer::scan_token() {
       add_token(TokenType::KW_EVENT);
     }
     else if (is_lit_char_2()) {
-      // std::println("Lit character found");
       add_token(TokenType::LIT_CHAR);
     }
     else if (is_lit_bool()) {
@@ -353,6 +357,7 @@ void Lexer::scan_token() {
     } else if (is_identifier()) {
       add_token(TokenType::IDENTIFIER);
     } else {
+      advance();
       add_token(TokenType::ERROR);
     }
     break;
@@ -385,6 +390,7 @@ void Lexer::add_token(TokenType type) {
        3, std::format("Found Token: type {} text {} line {} col {}",
                       enum_to_str[static_cast<std::size_t>(type)], text, line,
                       column), aion::core::YELLOW);
+    // advance();
   }
 }
 

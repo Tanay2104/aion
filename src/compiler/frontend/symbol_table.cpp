@@ -80,8 +80,7 @@ namespace aion::frontend
             });
             if (!success)
             {
-                ctxt.diagnostics.report_warning({std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()},
-                    std::format("Ignoring redeclaration of field \"{}\"", field.name));
+                ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of field \"{}\"", field.name));
             }
         }
 
@@ -101,8 +100,7 @@ namespace aion::frontend
 
             if (!success)
             {
-                ctxt.diagnostics.report_warning({std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()},
-                    std::format("Ignoring redeclaration of predicate \"{}\"", pred.name));
+                ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of predicate \"{}\"", pred.name));
             }
         }
         ctxt.log(3, "Filled symbol table for predicates");
@@ -120,8 +118,7 @@ namespace aion::frontend
 
             if (!success)
             {
-                ctxt.diagnostics.report_warning({std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()},
-                    std::format("Ignoring redeclaration of regex \"{}\"", regex.name));
+                ctxt.diagnostics.report_warning(std::format("Ignoring redeclaration of regex \"{}\"", regex.name));
             }
         }
 

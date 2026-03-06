@@ -16,6 +16,7 @@ namespace aion::analysis
     class AlphabetVisitor : public frontend::RegexVisitor
     {
     private:
+        bool max_states_error_given = false;
         std::uint16_t current_pos_id;
         frontend::SymbolTable& table;
         frontend::Symbol* rsymbol;

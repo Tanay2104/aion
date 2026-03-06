@@ -25,7 +25,7 @@ namespace aion::automata
         // Access to the regex info.
         const frontend::RegexMetadata& meta;
         const core::CompilationContext& ctxt;
-        std::uint16_t num_states;
+        std::uint16_t num_states{};
         // Our global follow set.
         std::unordered_map<std::uint16_t, std::unordered_set<std::uint16_t>> follow;
 

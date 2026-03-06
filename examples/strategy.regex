@@ -12,7 +12,7 @@ event {
     bool valid;
 };
 
-// Atomic predicates based on raw event fields.
+// Atomic predicates based on raw event fields  .
 pred P_x_big = (x > 100);
 pred P_x_small = (x < 20);
 
@@ -29,4 +29,3 @@ pred P3 = P_x_small && (P_y_b || P_y_c);
 
 // The main state machine logic.
 regex R1 = (P1 | P2*) . _ . P3 . P3;
-// regex R1 = P1 *;

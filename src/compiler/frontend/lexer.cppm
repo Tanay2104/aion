@@ -74,7 +74,7 @@ private:
   std::size_t column = 1;  // Current column.
 
   // helper funcs.
-  bool is_at_end() const;
+  [[nodiscard]] bool is_at_end() const;
 
   // advanced current position by 1 and return the current char.
   char advance();
@@ -85,7 +85,7 @@ private:
   [[nodiscard]] char peek() const;
 
   // return next char without increasing curr, col
-  [[nodiscard]] char peek_next();
+  [[nodiscard]] char peek_next() const;
 
   bool is_identifier();
   // If it doesn't start with char, then not an identifier.
@@ -95,9 +95,9 @@ private:
 
   bool is_event();
 
-  bool is_lit_digit();
+  [[nodiscard]] bool is_lit_digit() const;
   bool is_lit_int();
-  bool is_lit_char();
+  [[nodiscard]] bool is_lit_char() const;
   bool is_lit_char_2();
   bool is_lit_string();
   bool is_lit_float();

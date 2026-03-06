@@ -43,7 +43,7 @@ namespace aion::frontend
         }
         else
         {
-            synchronize();
+            return std::nullopt;
         }
         // no advance here means that we are expecting parse regex to advance
         if (peek().type != TokenType::SEMICOLON)
@@ -75,7 +75,6 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location,"expected regular expression");
             return nullptr;
         }
 
@@ -90,7 +89,6 @@ namespace aion::frontend
             }
             else
             {
-                ctxt.diagnostics.report_error(peek().location,"expected regular expression");
                 return nullptr;
             }
         }
@@ -116,7 +114,6 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location,"expected regular expression");
             return nullptr;
         }
 
@@ -131,7 +128,6 @@ namespace aion::frontend
             }
             else
             {
-                ctxt.diagnostics.report_error(peek().location,"expected regular expression");
                 return nullptr;
             }
         }
@@ -150,7 +146,6 @@ namespace aion::frontend
 
         if (regex_primary == nullptr)
         {
-            ctxt.diagnostics.report_error(peek().location,"expected regular expression");
             return nullptr;
         }
         // let's say the primary advances before returning.
@@ -185,7 +180,6 @@ namespace aion::frontend
             auto regexpr = parse_regex();
             if (regexpr == nullptr)
             {
-                ctxt.diagnostics.report_error(peek().location,"expected regular expression");
                 return nullptr;
             }
             if (peek().type != TokenType::RPAREN)
@@ -197,7 +191,8 @@ namespace aion::frontend
         }
         else
         {
-            ctxt.diagnostics.report_error(peek().location, "unknown expression encountered");
+            // ctxt.diagnostics.report_error(peek().location, "unknown expression encountered");
+            ctxt.diagnostics.report_error(peek().location,"expected regular expression");
             return nullptr;
         }
         advance();

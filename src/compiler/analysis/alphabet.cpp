@@ -23,8 +23,13 @@ namespace aion::analysis
     void AlphabetVisitor::register_node(const frontend::RegexExpr* node, std::string_view name) {
         auto& meta = std::get<frontend::RegexMetadata>(rsymbol->details);
         if (current_pos_id >= aion::core::MAX_STATES) {
-            ctxt.diagnostics.report_error({std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max()}, "Regex too long. Does not fit in 64 bits.");
+            if (!max_states_error_given)
+            {
+                ctxt.diagnostics.report_error( "Regex too long. Does not fit in 64 bits. Ignoring trailing symbols.");
+                max_states_error_given = true;
+            }
             return;
+            // Really not much point in continuing now.
         }
         meta.pos_ids_to_names[current_pos_id] = std::string(name);
         meta.node_to_pos_ids[node] = current_pos_id;

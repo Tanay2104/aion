@@ -30,8 +30,9 @@ export namespace aion {
       void set_source_location(const std::string_view src);
       // reporting stuff to user.
       void report_error(const SourceLocation &location, std::string_view msg);
+      void report_error(std::string_view msg);
       void report_warning(const SourceLocation &location, std::string_view msg);
-
+      void report_warning(std::string_view msg);
       // report internal error.
       static void report_internal_error(std::string_view msg);
 
