@@ -7,3 +7,5 @@ tester.sh
 *.tex
 *.aux
 resources.md
+bench_philo.md
+tests_philo.md
