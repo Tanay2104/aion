@@ -1,0 +1,3 @@
+event { string s; };
+pred P = s == "true";
+regex R = P;

@@ -48,3 +48,27 @@ target_link_libraries(aion_contract_tests
 )
 
 gtest_discover_tests(aion_contract_tests NO_PRETTY_VALUES TRUE)
+
+add_executable(aion_e2e_tests
+    e2e/e2e_compiler_tests.cpp
+)
+
+target_link_libraries(aion_e2e_tests
+    PRIVATE
+        GTest::gtest_main
+)
+
+gtest_discover_tests(aion_e2e_tests NO_PRETTY_VALUES TRUE)
+
+add_executable(aion_semantic_tests
+    semantic/semantic_validity_tests.cpp
+)
+
+target_link_libraries(aion_semantic_tests
+    PRIVATE
+        aion_utils
+        aion_frontend
+        GTest::gtest_main
+)
+
+gtest_discover_tests(aion_semantic_tests NO_PRETTY_VALUES TRUE)

@@ -1,0 +1,3 @@
+event { bool a; bool b; bool c; };
+pred P = a || b && !c;
+regex R = P;

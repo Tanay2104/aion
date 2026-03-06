@@ -1,0 +1,4 @@
+event { int x; int y; int z; };
+pred P1 = x & y;
+pred P2 = x / z;
+regex R = P1 | P2;

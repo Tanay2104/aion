@@ -1,0 +1,3 @@
+event { int x; };
+pred A = x == 1;
+regex R = _ . A;

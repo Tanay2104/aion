@@ -1,0 +1,2 @@
+pred A = true
+regex Bad = (A | );

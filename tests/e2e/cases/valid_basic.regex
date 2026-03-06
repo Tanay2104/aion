@@ -1,0 +1,4 @@
+event { int x; bool ok; };
+pred A = x == 1;
+pred B = ok == true;
+regex R = A . B*;

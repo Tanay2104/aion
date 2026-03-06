@@ -1,0 +1,4 @@
+event { int x; };
+pred A = x == 1;
+pred B = x == 2;
+regex R = A | B;
