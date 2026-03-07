@@ -15,20 +15,43 @@ any latency-sensitive, allocation-free codebase.
 
 ## Table of Contents
 
-1. [What Problem Does Aion Solve?](#1-what-problem-does-aion-solve)
-2. [What Aion Is Not](#2-what-aion-is-not)
-3. [How It Works — The Pipeline](#3-how-it-works--the-pipeline)
-4. [The `.regex` Language](#4-the-regex-language)
-5. [Generated Code and Runtime Model](#5-generated-code-and-runtime-model)
-6. [Project Structure](#6-project-structure)
-7. [Building](#7-building)
-8. [Running the Compiler](#8-running-the-compiler)
-9. [Examples](#9-examples)
-10. [Testing](#10-testing)
-11. [Benchmarking](#11-benchmarking)
-12. [Design Decisions](#12-design-decisions)
-13. [Contributing](#13-contributing)
-14. [Roadmap](#14-roadmap)
+- [Aion](#aion)
+  - [Table of Contents](#table-of-contents)
+  - [1. What Problem Does Aion Solve?](#1-what-problem-does-aion-solve)
+  - [2. What Aion Is Not](#2-what-aion-is-not)
+  - [3. How It Works — The Pipeline](#3-how-it-works--the-pipeline)
+    - [Frontend](#frontend)
+    - [Analysis](#analysis)
+    - [Automata](#automata)
+    - [Codegen](#codegen)
+  - [4. The `.regex` Language](#4-the-regex-language)
+    - [Event Declaration](#event-declaration)
+    - [Predicate Declarations](#predicate-declarations)
+    - [Regex Declarations](#regex-declarations)
+  - [5. Generated Code and Runtime Model](#5-generated-code-and-runtime-model)
+  - [6. Project Structure](#6-project-structure)
+    - [Key Module Boundaries](#key-module-boundaries)
+  - [7. Building](#7-building)
+    - [Prerequisites](#prerequisites)
+    - [Configure and Build](#configure-and-build)
+    - [Run Tests](#run-tests)
+  - [8. Running the Compiler](#8-running-the-compiler)
+  - [9. Examples](#9-examples)
+    - [`robot.regex`](#robotregex)
+    - [`strategy.regex`](#strategyregex)
+    - [`main_app.cpp`](#main_appcpp)
+  - [10. Testing](#10-testing)
+    - [Test Categories](#test-categories)
+    - [Adding Tests](#adding-tests)
+  - [11. Benchmarking](#11-benchmarking)
+  - [12. Design Decisions](#12-design-decisions)
+    - [Why Glushkov and not Thompson?](#why-glushkov-and-not-thompson)
+    - [Why a compiled header and not a library?](#why-a-compiled-header-and-not-a-library)
+    - [Why C++23 modules?](#why-c23-modules)
+    - [Why only Clang?](#why-only-clang)
+  - [13. Contributing](#13-contributing)
+  - [14. Roadmap](#14-roadmap)
+  - [License](#license)
 
 ---
 
@@ -576,7 +599,7 @@ priorities shift. Nothing here is a commitment.
 - [ ] Complete AVX2 codegen backend
 - [ ] Wire up the `examples/` directory to the CMake build
 - [ ] Support composite predicate expressions (AND / OR / NOT over sub-predicates)
-- 
+
 **Medium-term (usability)**
 - [ ] Stabilise the CLI flag interface
 - [ ] Implement the benchmarking suite described in `docs/bench.md`
