@@ -497,9 +497,10 @@ any I/O and keeps tests fast and hermetic.
 
 ## 11. Benchmarking
 
-> **No benchmarks are currently implemented.** The benchmarking infrastructure
+> **Rigorous benchmarks are not currently implemented.** The benchmarking infrastructure
 > and suite are planned. See `docs/bench.md` for the full design: what will be
-> measured, why, and how to reproduce results.
+> measured, why, and how to reproduce results. A rough quote using microbenchmarks
+> is 100M Events/s on a 35-40 state NFA, with 80% of that being the predicate evaluation cost.
 
 The planned benchmark suite will measure:
 
