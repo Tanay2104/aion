@@ -1,0 +1,27 @@
+// Group S: state-count sweep with fixed alternating sequence structure.
+// Only regex length changes; predicate set and event schema stay fixed.
+event {
+    int x;
+    char y;
+    int ts;
+    int valid;
+};
+
+// atomic predicate building blocks
+pred P_hi    = (x > 100);
+pred P_lo    = (x < 30);
+pred P_mid   = (x >= 30) && (x <= 100);
+pred P_ya    = (y == 'a');
+pred P_yb    = (y == 'b');
+pred P_valid = (valid == 1);
+
+// sequence symbols
+pred A = P_valid && P_hi  && P_ya;
+pred B = P_valid && P_mid && P_yb;
+
+// regex length sweep: 2, 4, 8, 16, 32 positions
+regex S2  = A . B;
+regex S4  = A . B . A . B;
+regex S8  = A . B . A . B . A . B . A . B;
+regex S16 = A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B;
+regex S32 = A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B . A . B;

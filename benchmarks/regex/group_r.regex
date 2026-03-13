@@ -1,0 +1,40 @@
+// Group R: "real" end-to-end pattern.
+// Case modeled: risk monitoring for event pipelines (auth + behavior + settlement).
+// Informal flow:
+// 1) Early pre-check activity starts.
+// 2) High-value or suspicious-valid activity accumulates.
+// 3) Optional noisy segments and midstream pivots happen.
+// 4) Two low-value confirmations occur.
+// 5) Final late-stage confirmation(s) close the pattern.
+event {
+    int x;
+    char y;
+    int ts;
+    int valid;
+};
+
+// atomic predicate building blocks
+pred P_hi    = (x > 100);
+pred P_lo    = (x < 30);
+pred P_mid   = (x >= 30) && (x <= 100);
+pred P_ya    = (y == 'a');
+pred P_yb    = (y == 'b');
+pred P_yc    = (y == 'c');
+pred P_valid = (valid == 1);
+pred P_early = (ts < 50);
+pred P_late  = (ts > 150);
+
+// shared composite symbols
+pred A = P_valid && P_hi  && P_ya;
+pred B = P_valid && P_mid && P_yb;
+pred C = P_lo   && (P_yb || P_yc);
+pred D = P_early && P_mid;
+pred E = P_late  && P_hi;
+pred F = P_valid && (P_yb || P_yc);
+pred G = (!P_valid) && P_lo;
+pred H = P_hi && P_yc;
+pred I = P_mid && P_ya;
+pred J = P_late && (P_yb || P_yc);
+
+// 23-symbol pattern.
+regex R_real = (D . (A | I) . (A | B | F)*) . ((G | _ ) . (B | C))* . ((I | B) . (F | C))* . (C . C . (F | B)) . (H | E) . (J . (E | J));

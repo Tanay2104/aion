@@ -8,6 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(aion VERSION 0.1.0 LANGUAGES C CXX)
 
+option(AION_BUILD_BENCHMARKS "Build Aion synthetic benchmark binaries" OFF)
+option(AION_BUILD_TESTS "Build Aion test binaries" OFF)
+
 # Compiler Warnings
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -Wno-unknown-pragmas)
@@ -21,6 +24,13 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(src)
-enable_testing()
-add_subdirectory(tests)
+
+if (AION_BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()
+
+if (AION_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 # add_subdirectory(examples) # later

@@ -1,0 +1,26 @@
+// Shared predicate snippets for synthetic benchmark design/docs.
+// (Not compiled directly by the harness binaries.)
+event {
+    int x;
+    char y;
+    int ts;
+    int valid;
+};
+
+// atomic predicates
+pred P_hi    = (x > 100);
+pred P_lo    = (x < 30);
+pred P_mid   = (x >= 30) && (x <= 100);
+pred P_ya    = (y == 'a');
+pred P_yb    = (y == 'b');
+pred P_yc    = (y == 'c');
+pred P_valid = (valid == 1);
+pred P_early = (ts < 50);
+pred P_late  = (ts > 150);
+
+// composite predicates
+pred A = P_valid && P_hi  && P_ya;
+pred B = P_valid && P_mid && P_yb;
+pred C = P_lo   && (P_yb || P_yc);
+pred D = P_early && P_mid;
+pred E = P_late  && P_hi;

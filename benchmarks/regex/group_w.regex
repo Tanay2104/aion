@@ -1,0 +1,31 @@
+// Group W: wildcard-density sweep.
+// WN means N wildcard positions between A and C.
+event {
+    int x;
+    char y;
+    int ts;
+    int valid;
+};
+
+// atomic predicate building blocks
+pred P_hi    = (x > 100);
+pred P_lo    = (x < 30);
+pred P_mid   = (x >= 30) && (x <= 100);
+pred P_ya    = (y == 'a');
+pred P_yb    = (y == 'b');
+pred P_yc    = (y == 'c');
+pred P_valid = (valid == 1);
+
+// anchor symbols at start/end
+pred A = P_valid && P_hi  && P_ya;
+pred B = P_valid && P_mid && P_yb;
+pred C = P_lo   && (P_yb || P_yc);
+
+// exponential wildcard sweep
+regex W0  = A . B . C;
+regex W1  = A . _ . C;
+regex W2  = A . _ . _ . C;
+regex W4  = A . _ . _ . _ . _ . C;
+regex W8  = A . _ . _ . _ . _ . _ . _ . _ . _ . C;
+regex W16 = A . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . C;
+regex W32 = A . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . _ . C;

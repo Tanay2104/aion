@@ -1,0 +1,23 @@
+// Group P: predicate-cost sweep.
+// All regexes keep identical 4-state repeated-symbol structure.
+event {
+    int x;
+    char y;
+    int ts;
+    int valid;
+};
+
+// complexity ladder: each level adds more checks/logic
+pred SIMPLE        = (x > 100);
+pred MODERATE      = (x > 100) && (y == 'a');
+pred MEDIUM        = (x > 100) && (y == 'a') && (valid == 1);
+pred COMPOUND      = (x > 95) && (x < 170) && (valid == 1) && ((y == 'a') || (y == 'b')) && (ts < 120);
+pred VERY_COMPOUND = ((x > 90) && (x < 170) && (valid == 1) && ((y == 'a') || (y == 'b')) && (ts < 120)) ||
+                     ((x > 140) && (valid == 1) && (ts < 50) && !(y == 'c')) ||
+                     ((x > 100) && (valid == 1) && (y == 'a'));
+
+regex P_simple   = SIMPLE   . SIMPLE   . SIMPLE   . SIMPLE;
+regex P_moderate = MODERATE . MODERATE . MODERATE . MODERATE;
+regex P_medium   = MEDIUM   . MEDIUM   . MEDIUM   . MEDIUM;
+regex P_compound = COMPOUND . COMPOUND . COMPOUND . COMPOUND;
+regex P_very_compound = VERY_COMPOUND . VERY_COMPOUND . VERY_COMPOUND . VERY_COMPOUND;
