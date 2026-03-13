@@ -146,12 +146,12 @@ The Python oracle tests require `python3` to be available in `PATH`. If absent, 
 
 ```bash
 # Debug
-cmake --preset debug
-cmake --build --preset debug
-
-# Release
-cmake --preset release
-cmake --build --preset release
+```bash
+cmake --preset debug -DAION_BUILD_TESTS=ON
+cmake --build --preset debug \
+  --target aion_unit_tests aion_contract_tests \
+           aion_semantic_tests aion_e2e_tests
+```
 ```
 
 ### Run Everything

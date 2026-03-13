@@ -50,6 +50,7 @@ namespace  aion::codegen
                           "// DO NOT MODIFY\n");
 
         emitter.emit_line("#include <array>");
+        emitter.emit_line("#include <bit>");
         emitter.emit_line("#include <cstdint>");
         emitter.emit_line("#include <cstddef>");
 

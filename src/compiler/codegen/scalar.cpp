@@ -44,10 +44,6 @@ namespace aion::runtime
     {
         // This will be executed first.
         convert_to_hw_nfa();
-        if (ctxt.options.jitter == true)
-        {
-            emitter.emit_line("#include <bit> // Need it for countr_zero() for jitter mode");
-        }
         emitter.emit_block_start(std::format("class Engine_{}", regex_decl.name));
 
     }
@@ -75,9 +71,14 @@ namespace aion::runtime
         // Now we need to loop over events and emit the predicate evaluation M stuff.
         // however we don't have direct access to the maps so we use a two map approach.
         const frontend::RegexMetadata& meta = std::get<frontend::RegexMetadata>(symbol_table.resolve(regex_decl.name)->details);
-        for (auto& [node_ptr, pos_id]: meta.node_to_pos_ids)
+        for (std::uint16_t pos_id = 1; pos_id <= nfa.num_states; ++pos_id)
         {
-            std::string_view name = meta.pos_ids_to_names.at(pos_id);
+            const auto it = meta.pos_ids_to_names.find(pos_id);
+            if (it == meta.pos_ids_to_names.end())
+            {
+                continue;
+            }
+            std::string_view name = it->second;
             if (name == "_")
             {
                 emitter.emit_line(std::format("M |= ((0ULL - true) & (1ULL << {}));", pos_id));
