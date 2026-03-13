@@ -11,4 +11,3 @@ bench_philo.md
 tests_philo.md
 data/
 benchmarks/results/*
-!benchmarks/results/.gitkeep

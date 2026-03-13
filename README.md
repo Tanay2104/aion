@@ -617,7 +617,6 @@ priorities shift. Nothing here is a commitment.
 
 **Medium-term (usability)**
 - [ ] Stabilise the CLI flag interface
-- [ ] Implement the benchmarking suite described in `docs/bench.md`
 - [ ] GCC / libstdc++ support
 - [ ] LSP-friendly diagnostic output (JSON mode) and syntax highlighting definitions.
 
