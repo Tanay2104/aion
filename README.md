@@ -3,7 +3,7 @@
 > **⚠️ Status: Active Development — Pre-Alpha**
 > Aion is under heavy construction. The compiler pipeline is functional for the core
 > subset of the language, but many features are incomplete, APIs are unstable, and
-> the generated code has not yet been benchmarked. Expect breaking changes.
+> the benchmark suite is still synthetic-only. Expect breaking changes.
 
 Aion is a **transpiler** that transforms a concise, domain-specific `.regex` language
 into a zero-allocation, branch-minimised C++ event-matching engine. You describe your
@@ -294,12 +294,10 @@ aion/
 ├── CMakeLists.txt          # Root build definition
 ├── CMakePresets.json       # debug / release presets (Clang + libc++)
 ├── docs/
-│   ├── aion.tex / .pdf     # Main language and design document
-│   ├── aion_spec.tex / .pdf
-│   ├── aion_guide.pdf      # User guide
-│   ├── bench.md            # Benchmarking philosophy and planned suite
+│   ├── bench.md            # Public benchmark guide
+│   ├── bench_results_2026_03_13.md  # Dated benchmark analysis
 │   ├── grammar.md          # Formal grammar reference
-│   └── resources.md        # Background reading
+│   ├── tests.md            # Testing notes
 ├── examples/
 │   ├── main_app.cpp        # Example consumer of a generated header
 │   ├── simple.regex        # Minimal example
@@ -334,6 +332,14 @@ public interface modules are:
 | `aion.automata` | `Glushkov`, `NFA`, `Partitioner` |
 | `aion.codegen` | `Emitter`, `CodegenStrategy`, scalar/AVX2 backends |
 | `aion.utils` | `ArgParser` |
+
+### Documentation
+
+- [`docs/bench.md`](docs/bench.md) - benchmark guide, methodology, and reproduction
+- [`docs/bench_results_2026_03_13.md`](docs/bench_results_2026_03_13.md) - latest dated benchmark analysis
+- [`docs/grammar.md`](docs/grammar.md) - grammar reference
+- [`docs/resources.md`](docs/resources.md) - background reading and references
+- [`docs/tests.md`](docs/tests.md) - testing notes
 
 ---
 
@@ -451,10 +457,16 @@ int main() {
 
 ## 10. Testing
 
-Tests live under `tests/` and are built automatically as part of the CMake
-build. The suite uses **Google Test**.
+Tests live under `tests/`. The suite uses **Google Test**.
 
 ### Test Categories
+To build tests
+```bash
+cmake --preset release -DAION_BUILD_TESTS=ON
+cmake --build --preset release \
+  --target aion_unit_tests aion_contract_tests \
+           aion_semantic_tests aion_e2e_tests
+```
 
 **Unit tests** (`tests/unit/`) test each compiler stage in isolation:
 
@@ -497,17 +509,42 @@ any I/O and keeps tests fast and hermetic.
 
 ## 11. Benchmarking
 
-> **Rigorous benchmarks are not currently implemented.** The benchmarking infrastructure
-> and suite are planned. See `docs/bench.md` for the full design: what will be
-> measured, why, and how to reproduce results. A rough quote using microbenchmarks
-> is 100M Events/s on a 35-40 state NFA, with 80% of that being the predicate evaluation cost.
+The synthetic benchmark suite is implemented under `benchmarks/`.
 
-The planned benchmark suite will measure:
+To build benchmark binaries:
 
-- Scalar codegen throughput vs. a hand-written equivalent
-- AVX2 codegen throughput
-- Comparison against RE2 and Hyperscan on equivalent matching tasks
-- Sensitivity to NFA size (number of symbol positions) and event struct size
+```bash
+cmake --preset release -DAION_BUILD_BENCHMARKS=ON
+cmake --build --preset release \
+  --target aion_bench_throughput_jitter aion_bench_throughput_nojitter \
+           aion_bench_latency_jitter aion_bench_latency_nojitter
+```
+
+To run the full synthetic suite and generate summaries:
+
+```bash
+# Disable frequency scaling (requires root; Linux only)
+sudo cpupower frequency-set -g performance
+
+# Run full synthetic matrix + summary
+# To pin core, set AION_BENCH_CPU_CORE env variable
+benchmarks/scripts/run_synthetic.sh release
+```
+
+Outputs are written to `benchmarks/results/<timestamp>/`:
+
+- `throughput_jitter.json`
+- `throughput_nojitter.json`
+- `latency_jitter.csv`
+- `latency_nojitter.csv`
+- `summary.csv`
+- `summary.md`
+- `plots/`
+
+Cross-engine RE2/Hyperscan comparisons are deferred for now.
+Current implementation scope is synthetic Aion-only and handwritten baseline
+measurements documented in `docs/bench.md` and
+`docs/bench_results_2026_03_13.md`.
 
 ---
 
