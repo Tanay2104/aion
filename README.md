@@ -608,7 +608,8 @@ without warnings.
 ## 14. Roadmap
 
 Items are roughly ordered by priority, but the project is single-author and
-priorities shift. Nothing here is a commitment.
+priorities shift. Nothing here is a commitment. This is a small sketch. A more
+detailed discussion can be found at `docs/roadmap.md`.
 
 **Near-term (compiler correctness)**
 - [ ] Complete AVX2 codegen backend

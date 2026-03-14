@@ -173,6 +173,7 @@ namespace aion::frontend
         // check identifier
         else if (peek().type == TokenType::IDENTIFIER)
         {
+            // Critical note: This mixes predicates with RegexRefExpr
             primary_regexpr->expr = peek().text;
         }
         else if (peek().type == TokenType::LPAREN)

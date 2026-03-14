@@ -5,5 +5,4 @@
 
 export module aion.analysis;
 
-export import :minimizer;
 export import :alphabet;

@@ -1,4 +1,3 @@
-event { int x; };
-pred A = x == 1;
-regex Bad = (A | );
-regex Good = A;
+event { int z; };
+pred x  = true;
+regex x = _;

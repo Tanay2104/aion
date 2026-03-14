@@ -39,7 +39,6 @@ target_sources(aion_analysis PUBLIC
     FILE_SET CXX_MODULES
         FILES
             analysis/analysis.cppm
-            analysis/minimizer.cppm
             analysis/alphabet.cppm
         PRIVATE
             analysis/alphabet.cpp
