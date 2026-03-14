@@ -577,9 +577,11 @@ mature on Clang with libc++ at the time of writing. GCC support is planned once
 the CMake/GCC combination stabilises.
 
 ### Why use brittle std::string_view everywhere?
+
 Currently Aion processes only one file, and that is opened at Aion runtime(regex compile time).
 There is no real harm to using string_view instead of string here, it only saves memory.
 If future needs present otherwise, this can always be changed easily.
+
 ---
 
 ## 13. Contributing
