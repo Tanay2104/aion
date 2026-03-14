@@ -232,7 +232,7 @@ struct Event {
     int     sensor_id;
     float   voltage;
     bool    armed;
-    char    label[MAX_STRING_SIZE];
+    char    label;
 };
 
 class Engine_R {
