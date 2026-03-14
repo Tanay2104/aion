@@ -140,12 +140,6 @@ TEST(LexerTests, TokenizesCharLiteral) {
   EXPECT_TRUE(contains_token_text(tokens, TokenType::LIT_CHAR, "a"));
 }
 
-TEST(LexerTests, TokenizesStringLiteralAlphabetic) {
-  CompilationContext ctxt;
-  const auto lexed = tokenize("event {}; pred P = s == \"alpha\";", ctxt);
-  const auto &tokens = lexed.tokens;
-  EXPECT_TRUE(contains_token_text(tokens, TokenType::LIT_STRING, "alpha"));
-}
 
 TEST(LexerTests, TokenizesBooleanLiterals) {
   CompilationContext ctxt;

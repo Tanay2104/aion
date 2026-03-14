@@ -263,8 +263,6 @@ ScalarValue default_value_for_type(const Type type) {
     return 0.0;
   case Type::CHAR:
     return static_cast<char>('\0');
-  case Type::STRING:
-    return std::string{};
   }
   return false;
 }
@@ -390,8 +388,6 @@ private:
       return static_cast<double>(std::get<float>(literal.value));
     case Type::CHAR:
       return std::get<char>(literal.value);
-    case Type::STRING:
-      return std::string(std::get<std::string_view>(literal.value));
     }
     return false;
   }

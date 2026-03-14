@@ -23,7 +23,6 @@ enum class TokenType {
   LIT_FLOAT,   // e.g., 100.05
   LIT_CHAR,    // e.g., 'a'
   LIT_BOOL, // true or false
-  LIT_STRING,  // e.g., "hello"
 
   // C++ Predicate Operators
   EQUALS,        // =
@@ -99,7 +98,6 @@ private:
   bool is_lit_int();
   [[nodiscard]] bool is_lit_char() const;
   bool is_lit_char_2();
-  bool is_lit_string();
   bool is_lit_float();
   bool is_lit_bool();
 

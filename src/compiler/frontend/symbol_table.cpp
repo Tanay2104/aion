@@ -64,10 +64,6 @@ namespace aion::frontend
                     details.size_in_bytes = 4;
                     offset += 4;
                     break;
-                case core::Type::STRING:
-                        details.size_in_bytes = core::MAX_STRING_SIZE;
-                        offset += core::MAX_STRING_SIZE;
-                    break;
                 default:
                     // hopefully nothing happens here.
                     // parser would have noticed otherwise.

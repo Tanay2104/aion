@@ -17,15 +17,9 @@ export namespace aion::core
         INT,
         CHAR,
         FLOAT,
-        STRING,
         BOOL,
     };
 
-    // Critical note: We assume that string size cannot exceed MAX_STRING_SIZE
-    // this is mainly based on the assumption that usually small strings are checked.
-    // And if large checks need to be done then Aion isn't really the most apt choice.
-    // We encourage only int, float, char usage.
-    constexpr std::uint32_t MAX_STRING_SIZE = 64; //  in bytes
 
     // Note: Currently we are using only uint64 to represent the states. This implies
     // a maximum of 64 states. Adding AVX2 will increase this to 128 states, or 256

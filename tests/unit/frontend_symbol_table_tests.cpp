@@ -62,7 +62,7 @@ const FieldMetadata *field_meta(const SymbolTable &table, std::string_view name)
 
 TEST(SymbolTableTests, AssignsFieldOffsetsAndSizesConsistently) {
   SymbolBuildResult result = build_symbol_table(
-      "event { int a; char b; bool c; float d; string e; };\n"
+      "event { int a; char b; bool c; float d;};\n"
       "pred P = a == 1;\n"
       "regex R = P;\n");
 
@@ -72,13 +72,11 @@ TEST(SymbolTableTests, AssignsFieldOffsetsAndSizesConsistently) {
   const auto *b = field_meta(result.symbols, "b");
   const auto *c = field_meta(result.symbols, "c");
   const auto *d = field_meta(result.symbols, "d");
-  const auto *e = field_meta(result.symbols, "e");
 
   ASSERT_NE(a, nullptr);
   ASSERT_NE(b, nullptr);
   ASSERT_NE(c, nullptr);
   ASSERT_NE(d, nullptr);
-  ASSERT_NE(e, nullptr);
 
   EXPECT_EQ(a->type, Type::INT);
   EXPECT_EQ(a->offset, 0U);
@@ -96,9 +94,6 @@ TEST(SymbolTableTests, AssignsFieldOffsetsAndSizesConsistently) {
   EXPECT_EQ(d->offset, 6U);
   EXPECT_EQ(d->size_in_bytes, 4U);
 
-  EXPECT_EQ(e->type, Type::STRING);
-  EXPECT_EQ(e->offset, 10U);
-  EXPECT_EQ(e->size_in_bytes, static_cast<std::uint8_t>(aion::core::MAX_STRING_SIZE));
 }
 
 TEST(SymbolTableTests, WarnsOnDuplicateDeclarationsWithoutOverwritingOriginal) {
@@ -186,20 +181,6 @@ TEST(SymbolTableTests, FieldAndRegexNameConflictKeepsFieldSymbol) {
   EXPECT_EQ(sym->kind, SymbolKind::EVENT_FIELD);
 }
 
-TEST(SymbolTableTests, ComputesOffsetAfterLeadingStringField) {
-  SymbolBuildResult result = build_symbol_table(
-      "event { string name; int id; };\n"
-      "pred P = id == 1;\n"
-      "regex R = P;\n");
-
-  const auto *name = field_meta(result.symbols, "name");
-  const auto *id = field_meta(result.symbols, "id");
-  ASSERT_NE(name, nullptr);
-  ASSERT_NE(id, nullptr);
-  EXPECT_EQ(name->offset, 0U);
-  EXPECT_EQ(name->size_in_bytes, static_cast<std::uint8_t>(aion::core::MAX_STRING_SIZE));
-  EXPECT_EQ(id->offset, aion::core::MAX_STRING_SIZE);
-}
 
 TEST(SymbolTableTests, ProducesNoWarningsForUniqueDeclarations) {
   SymbolBuildResult result = build_symbol_table(

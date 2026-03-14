@@ -171,9 +171,6 @@ namespace aion::codegen
                     case core::Type::CHAR:
                         primary_expr += "'" + std::string{std::get<char>(arg.value)} + "'";
                         break;
-                    case core::Type::STRING:
-                        primary_expr += "\"" + std::string(std::get<std::string_view>(arg.value)) + "\"";
-                        break;
                 }
             }
             else if constexpr (std::is_same_v<T, std::unique_ptr<frontend::PredExpr>>) {

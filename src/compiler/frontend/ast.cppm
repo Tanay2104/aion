@@ -9,8 +9,8 @@ import std;
 import aion.core;
 
 export namespace aion::frontend {
-    constexpr std::array<std::string, 5> type_string =
-        { "int", "char", "float", "string" , "bool"};
+    constexpr std::array<std::string, 4> type_string =
+        { "int", "char", "float", "bool"};
 
 
     struct FieldDecl
@@ -67,7 +67,7 @@ export namespace aion::frontend {
     struct Literal
     {
         core::Type type{};
-        std::variant<int, float, char, std::string_view, bool> value{};
+        std::variant<int, float, char, bool> value{};
     };
     struct PrimaryPredExpr : PredExpr
     {

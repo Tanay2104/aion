@@ -10,7 +10,7 @@ import std;
 import aion.core;
 
 namespace aion::frontend {
-constexpr std::array<std::string, 30> enum_to_str = {
+constexpr std::array<std::string, 29> enum_to_str = {
     "KW_EVENT", // "event
     "KW_PRED",  // "pred"
     "KW_REGEX", // "regex"
@@ -21,7 +21,6 @@ constexpr std::array<std::string, 30> enum_to_str = {
     "LIT_FLOAT",   // e.g., 100.05
     "LIT_CHAR",    // e.g., 'a'
     "LIT_BOOL", //  true, false
-    "LIT_STRING",  // e.g., "hello"
 
     // C++ Predicate Operators
     "EQUALS",        // =
@@ -174,24 +173,7 @@ bool Lexer::is_lit_char() const
   }
   return false;
 }
-bool Lexer::is_lit_string() {
-  if (!(peek() == '\'' || peek() == '\"')) {
-    return false;
-  }
-  advance();
-  while (is_lit_char()) {
-    advance();
-  }
-  if (!(peek() == '\'' || peek() == '\"')) {
-    current = start;
-    return false;
-  }
-  advance();
-  if (current == start) {
-    return false;
-  }
-  return true;
-}
+
 bool Lexer::is_lit_float() {
   while (is_lit_digit()) {
     advance();
@@ -348,8 +330,6 @@ void Lexer::scan_token() {
     }
     else if (is_lit_bool()) {
       add_token(TokenType::LIT_BOOL);
-    } else if (is_lit_string()) {
-      add_token(TokenType::LIT_STRING);
     } else if (is_lit_float()) {
       add_token(TokenType::LIT_FLOAT);
     } else if (is_lit_int()) {
@@ -366,7 +346,7 @@ void Lexer::scan_token() {
 
 void Lexer::add_token(TokenType type) {
   std::string_view text;
-  if (type == TokenType::LIT_CHAR || type == TokenType::LIT_STRING)
+  if (type == TokenType::LIT_CHAR)
   {
     // need to change start, end because of quotes.
     text = std::string_view(source).substr(start+1, current - start - 2);
@@ -399,7 +379,6 @@ Lexer::Lexer(std::string_view src, core::CompilationContext &ctxt)
 
 std::vector<Token> Lexer::tokenize() {
   while (!is_at_end()) {
-    // std::cout << "Curr : " << current << std::endl;
     start = current; // Reset start for the next token
     scan_token();
   }

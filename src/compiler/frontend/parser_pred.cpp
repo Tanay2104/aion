@@ -248,13 +248,6 @@ namespace aion::frontend
             literal.value = (peek().text[0]);
             primary_predexpr->expr = std::move(literal);
         }
-        else if (peek().type == TokenType::LIT_STRING)
-        {
-            Literal literal;
-            literal.type = core::Type::STRING;
-            literal.value = (peek().text);
-            primary_predexpr->expr = std::move(literal);
-        }
         else if (peek().type == TokenType::LIT_FLOAT)
         {
             Literal literal;

@@ -33,10 +33,6 @@ namespace aion::frontend
         {
             field.type = core::Type::CHAR;
         }
-        else if (type_text == "string")
-        {
-            field.type = core::Type::STRING;
-        }
         else if (type_text == "bool")
         {
             field.type = core::Type::BOOL;

@@ -121,7 +121,6 @@ Supported field types and their sizes:
 | `char`   | 1               |
 | `int`    | 4               |
 | `float`  | 4               |
-| `string` | `MAX_STRING_SIZE` (compile-time constant) |
 
 ### Analysis
 
@@ -171,7 +170,7 @@ event {
     int     sensor_id;
     float   voltage;
     bool    armed;
-    string  label;
+    char  label;
 };
 ```
 
@@ -187,15 +186,13 @@ the "alphabet" of the regular language.
 pred IsArmed       = armed == true;
 pred HighVoltage   = voltage > 4.5;
 pred KnownSensor   = sensor_id == 42;
-pred LabelAlert    = label == "ALERT";
+pred LabelAlert    = label == 'A'; // for Alert
 ```
 
 **Supported comparison operators:** `==`, `!=`, `<`, `>`, `<=`, `>=`
 
 Predicates can reference any field of the declared event type. The right-hand
-side must be a literal of a compatible type. Compound boolean expressions
-(AND/OR over predicates) are not currently part of the language — use separate
-predicates and combine them in a regex if needed.
+side must be a literal of a compatible type.  Compound boolean expressions are also supported.
 
 ### Regex Declarations
 
@@ -204,7 +201,6 @@ Regexes are regular expressions over predicate names.
 ```
 regex ArmThenTrigger = IsArmed . HighVoltage . KnownSensor;
 regex AlertLoop      = LabelAlert*;
-regex EitherPattern  = ArmThenTrigger | AlertLoop;
 ```
 
 **Operators:**
@@ -580,6 +576,10 @@ The `import std;` experimental feature and the associated CMake support are most
 mature on Clang with libc++ at the time of writing. GCC support is planned once
 the CMake/GCC combination stabilises.
 
+### Why use brittle std::string_view everywhere?
+Currently Aion processes only one file, and that is opened at Aion runtime(regex compile time).
+There is no real harm to using string_view instead of string here, it only saves memory.
+If future needs present otherwise, this can always be changed easily.
 ---
 
 ## 13. Contributing

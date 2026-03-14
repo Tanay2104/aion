@@ -322,18 +322,6 @@ TEST_F(E2ECompilerTests, TokenDumpRetainsIdentifiersAfterStandaloneAmpersandAndS
   EXPECT_NE(z_after_slash, std::string::npos);
 }
 
-TEST_F(E2ECompilerTests, StringLiteralTrueRemainsStringNotBoolInTokenDump) {
-  const std::filesystem::path input = fixture_file("bool_string_literal.regex");
-  const std::filesystem::path out_base = sandbox.file("bool_string_tokens");
-  const CommandResult run = run_aionc({input.string(), "--dump", "TOKENS", "-V0", "-o", out_base.string()},
-                                      sandbox.dir(), sandbox.file("bool_string.stdout"),
-                                      sandbox.file("bool_string.stderr"));
-
-  ASSERT_EQ(run.exit_code, 0);
-  const std::string dumped = read_file(out_base);
-  EXPECT_NE(dumped.find("TYPE: LIT_STRING\tTEXT: true"), std::string::npos);
-  EXPECT_EQ(dumped.find("TYPE: LIT_BOOL\tTEXT: true"), std::string::npos);
-}
 
 TEST_F(E2ECompilerTests, MultiErrorInputEmitsAtLeastTwoErrorsAndKeyMessages) {
   const std::filesystem::path input = fixture_file("multi_error.regex");
