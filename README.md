@@ -246,7 +246,8 @@ public:
         if (/* HighVoltage predicate */) M |= (1ULL << 1);
         // ...
         // Note that in the actual generated code branchless predicate
-        // evaluation is used, without if statements.
+        // evaluation is used, without if statements. Here if statements
+        // are used only for clarity.
 
         // Step 2: propagate state bitset through precomputed follow table
         uint64_t S_next = 0;
@@ -294,6 +295,7 @@ aion/
 │   ├── bench_results_2026_03_13.md  # Dated benchmark analysis
 │   ├── grammar.md          # Formal grammar reference
 │   ├── tests.md            # Testing notes
+│   ├── roadmap.md          # Future Work
 ├── examples/
 │   ├── main_app.cpp        # Example consumer of a generated header
 │   ├── simple.regex        # Minimal example
@@ -336,6 +338,7 @@ public interface modules are:
 - [`docs/grammar.md`](docs/grammar.md) - grammar reference
 - [`docs/resources.md`](docs/resources.md) - background reading and references
 - [`docs/tests.md`](docs/tests.md) - testing notes
+- [`docs/roadmap.md`](docs/roadmap.md) - Future Work
 
 ---
 
