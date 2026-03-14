@@ -423,7 +423,7 @@ this, Aion will refuse to compile it.
 ## 8. Latest Analysis
 
 The dated analysis for the latest fully plotted run now lives in
-[`docs/bench_results_2026_03_13.md`](./bench_results_2026_03_13.md).
+[`benchmarks/results/20260313_193528/analysis.md`](../benchmarks/results/20260313_193528/analysis.md).
 
 That note analyses `benchmarks/results/20260313_193528/` and the generated
 plots under `benchmarks/results/20260313_193528/plots/`.

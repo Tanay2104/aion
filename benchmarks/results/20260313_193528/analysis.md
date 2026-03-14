@@ -1,6 +1,6 @@
 # Aion Benchmark Results - March 13, 2026 Run
 
-This note contains the dated analysis for the latest fully plotted run:
+This note contains the dated analysis for this run folder:
 `benchmarks/results/20260313_193528/`.
 
 One measurement note matters when reading the latency tables: the latency

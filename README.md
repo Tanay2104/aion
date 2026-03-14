@@ -290,9 +290,23 @@ The critical properties of the generated runtime:
 aion/
 ├── CMakeLists.txt          # Root build definition
 ├── CMakePresets.json       # debug / release presets (Clang + libc++)
+├── benchmarks/
+│   ├── regex/              # Synthetic benchmark pattern groups
+│   ├── scripts/            # Runner + summariser utilities
+│   ├── src/                # Throughput/latency benchmark harnesses
+│   └── results/
+│       ├── .gitkeep
+│       └── 20260313_193528/
+│           ├── analysis.md
+│           ├── throughput_jitter.json
+│           ├── throughput_nojitter.json
+│           ├── latency_jitter.csv
+│           ├── latency_nojitter.csv
+│           ├── summary.csv
+│           ├── summary.md
+│           └── plots/
 ├── docs/
 │   ├── bench.md            # Public benchmark guide
-│   ├── bench_results_2026_03_13.md  # Dated benchmark analysis
 │   ├── grammar.md          # Formal grammar reference
 │   ├── tests.md            # Testing notes
 │   ├── roadmap.md          # Future Work
@@ -334,7 +348,7 @@ public interface modules are:
 ### Documentation
 
 - [`docs/bench.md`](docs/bench.md) - benchmark guide, methodology, and reproduction
-- [`docs/bench_results_2026_03_13.md`](docs/bench_results_2026_03_13.md) - latest dated benchmark analysis
+- [`benchmarks/results/20260313_193528/analysis.md`](benchmarks/results/20260313_193528/analysis.md) - latest dated benchmark analysis
 - [`docs/grammar.md`](docs/grammar.md) - grammar reference
 - [`docs/resources.md`](docs/resources.md) - background reading and references
 - [`docs/tests.md`](docs/tests.md) - testing notes
@@ -543,7 +557,7 @@ Outputs are written to `benchmarks/results/<timestamp>/`:
 Cross-engine RE2/Hyperscan comparisons are deferred for now.
 Current implementation scope is synthetic Aion-only and handwritten baseline
 measurements documented in `docs/bench.md` and
-`docs/bench_results_2026_03_13.md`.
+`benchmarks/results/20260313_193528/analysis.md`.
 
 ---
 
