@@ -83,7 +83,12 @@ namespace aion::runtime
             {
                 emitter.emit_line(std::format("M |= ((0ULL - true) & (1ULL << {}));", pos_id));
             }
-            else
+            else if (symbol_table.resolve(name) != nullptr && std::holds_alternative<frontend::RegexMetadata>(symbol_table.resolve(name)->details)) {
+                // This is a reference to another regex. Should work but quite a brittle way to handle this.
+                emitter.emit_line(std::format("Engine_{} {};", name, name));
+                emitter.emit_line(std::format("M |= ((0ULL - static_cast<std::uint64_t>({}.process_event(event))) & (1ULL << {}));",name,pos_id));
+            }
+            else if (symbol_table.resolve(name) != nullptr && std::holds_alternative<frontend::PredicateMetadata>(symbol_table.resolve(name)->details))
             {
                 /* We can also try this:
                  emitter.emit_line(std::format("M = B::bitwise_or(B::shift_left(static_cast<B::type>({}{}{}), {}), M);",

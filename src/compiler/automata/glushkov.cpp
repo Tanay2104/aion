@@ -14,6 +14,10 @@ namespace aion::automata
         std::unordered_map<std::string_view, Generic_NFA> all_nfa;
         for (const frontend::RegexDecl& regex_decl : ast.regexes)
         {
+            if (table.resolve(regex_decl.name) == nullptr || !std::holds_alternative<frontend::RegexMetadata>(table.resolve(regex_decl.name)->details)) {
+                continue;
+                // Invalid regex, was rejected for some reason early on.
+            }
             ctxt.log(2, std::format("[NFA] Building automaton for regex '{}'", regex_decl.name));
             GlushkovVisitor visitor(std::get<frontend::RegexMetadata>(table.resolve(regex_decl.name)->details), ctxt);
             regex_decl.expr->accept(visitor);

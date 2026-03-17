@@ -15,6 +15,7 @@ any latency-sensitive, allocation-free codebase.
 
 ## Table of Contents
 
+0. [Quickstart](#quickstart)
 1. [What Problem Does Aion Solve?](#1-what-problem-does-aion-solve)
 2. [What Aion Is Not](#2-what-aion-is-not)
 3. [How It Works — The Pipeline](#3-how-it-works--the-pipeline)
@@ -29,6 +30,59 @@ any latency-sensitive, allocation-free codebase.
 12. [Design Decisions](#12-design-decisions)
 13. [Contributing](#13-contributing)
 14. [Roadmap](#14-roadmap)
+
+---
+
+## Quickstart
+
+Use this if you just want to try Aion quickly.
+
+### Option A: Prebuilt binary (`aionc`)
+
+```bash
+# 1) Download and extract the release archive
+tar -xzf aion-v0.1.0-preview.1-<platform>.tar.gz
+cd <extracted-folder>
+
+# 2) Verify the binary runs
+./aionc --help
+```
+
+Compile one of the bundled examples:
+
+```bash
+./aionc examples/simple.regex -o simple_engine
+```
+
+This generates `simple_engine.hpp`.
+
+Compile-check the generated header:
+
+```bash
+cat > /tmp/aion_smoke.cpp <<'EOF'
+#include "simple_engine.hpp"
+int main() { return 0; }
+EOF
+
+clang++ -std=c++23 -I. -fsyntax-only /tmp/aion_smoke.cpp
+```
+
+### Option B: Build from source
+
+```bash
+git clone https://github.com/Tanay2104/aion
+cd aion
+cmake --preset release
+cmake --build --preset release
+
+./build/release/bin/aionc examples/simple.regex -o simple_engine
+```
+
+If you are evaluating release quality, also run:
+
+```bash
+ctest --test-dir build/release --output-on-failure
+```
 
 ---
 
@@ -201,6 +255,7 @@ Regexes are regular expressions over predicate names.
 ```
 regex ArmThenTrigger = IsArmed . HighVoltage . KnownSensor;
 regex AlertLoop      = LabelAlert*;
+regex EitherPattern  = ArmThenTrigger | AlertLoop;
 ```
 
 **Operators:**
@@ -414,17 +469,17 @@ After building, the `aion` binary is at `build/<preset>/bin/aion`.
 
 ```bash
 # Basic usage
-./aion <input.regex>
+./aionc <input.regex>
 
 # With explicit output path. 
 # The hpp extension is added to output for generated C++ file.
-./aion <input.regex> -o <output>
+./aionc <input.regex> -o <output>
 
 # Verbose / diagnostic output
-./aion <input.regex> --verbose
+./aionc <input.regex> --verbose
 
 # Dump the AST (useful for debugging)
-./aion <input.regex> --dump AST
+./aionc <input.regex> --dump AST
 ```
 
 > **Note:** The CLI interface is still being stabilised. Flags and their names

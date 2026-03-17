@@ -16,6 +16,10 @@ namespace aion::codegen
     {
         for (const frontend::RegexDecl& regex_decl: ast.regexes)
         {
+            if (symbol_table.resolve(regex_decl.name) == nullptr || !std::holds_alternative<frontend::RegexMetadata>(symbol_table.resolve(regex_decl.name)->details)) {
+                continue;
+                // Invalid regex, was rejected for some reason early on.
+            }
             std::unique_ptr<runtime::CodeGenStrategy> engine;
             if (ctxt.options.arch == core::Arch::SCALAR64)
             {

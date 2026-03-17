@@ -8,37 +8,11 @@ tradeoff, interesting research directions and more.
 
 ## Table of Contents
 
-1. [Current Implementation Bugs](#1-current-implementation-bugs)
-2. [Codegen Oversights And Need Of An IR](#2-codegen-oversights-and-need-of-an-ir)
-3. [Adding Features](#3-adding-features)
-4. [Aion as a First Filter](#4-aion-as-a-first-filter)
+1. [Codegen Oversights And Need Of An IR](#1-codegen-oversights-and-need-of-an-ir)
+2. [Adding Features](#2-adding-features)
+3. [Aion as a First Filter](#3-aion-as-a-first-filter)
 
-## 1. Current Implementation Bugs
-
-There are several bugs in the current implementation, which generate invalid code. Perhaps the most notable
-is that a reference to another regex isn't actually supported by the code, despite being in the formal grammar.
-This is because the current code relies on simple identifier checks for references as identifiers, and both
-a predicate identifier and regex identifier are treated the same way. This is an important issue and needs to be
-addressed.
-
-Another broader issue is namespace collision. Currently, the compiler only checks for repeated predicate names.
-However, it does no collision checks against event structs vs predicate names vs regex names. That is, the
-three names can collide with each other. The compiler ignores a predicate declaration with the name colliding with
-a field, and a regex declaration colliding with a field or predicate results in an uncaught exception of type
-`std::bad_variant_access: bad_variant_access`.
-
-The solution to the first problem is not yet identified, several choices are possible depending
-on how much we are willing to change the current code.
-Similarly, the second problem can be partially solved by putting namespaces like `event foo {int x};` and then using
-`pred bar = foo.x == 1;`. This would be helpful later too, when we (may or may not) introduce
-multiple event structs. Nevertheless, predicate and regex names should not collide, and their should
-be passes for ensuring so, as it would be quite cumbersome to write something like `pred.bar` or
-`regex.baz` everytime we want to refer to a predicate or regex.
-
-More than these, I am sure there would be bugs or perhaps untold mutual contracts between
-components. These need to be found out and fixed.
-
-## 2. Codegen Oversights And Need Of An IR
+## 1. Codegen Oversights And Need Of An IR
 
 The first codegen pattern used templates and concepts heavily. That pattern
 can be found at commit `dd9ef056e468948008e71aad9c8360e5ed762b5a`. I initially thought
@@ -68,7 +42,7 @@ Another small nitpick in the code generated is that the emitter emits the full f
 of states. While this doesn't affect the runtime latency, removing this would save some memory, which is a big
 deal in modern day memory crisis . Pun intended, ... or is it? ;).
 
-## 3. Adding Features
+## 2. Adding Features
 
 In almost any software, there is a tradeoff between features, maintainability and performance. Right now,
 Aion completely sacrifices features for maximum performance(and it indeed does quite well!). However, some
@@ -148,7 +122,7 @@ use basic arithmetic operations(+, -, *) to compare the fields. This would certa
 enhance the real world applicability of Aion. However, arithmetic support is a
 huge undertaking and brings many complications. Hence, it is more like a long term goal.
 
-## 4. Aion as a First Filter
+## 3. Aion as a First Filter
 
 This section discusses an interesting research direction: What if instead of letting Aion be the sole
 pattern matcher, we make it a first-filter matcher which processes events in the hot path and only sends

@@ -10,5 +10,5 @@ import :cemitter;
 
 namespace aion::codegen
 {
-    export void emit_event(const frontend::EventDecl& event_decl, CEmitter& emitter);
+    export void emit_event(const frontend::EventDecl& event_decl, const frontend::SymbolTable& symbol_table, CEmitter& emitter);
 }

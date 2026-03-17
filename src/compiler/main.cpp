@@ -20,7 +20,8 @@ import aion.automata;
 import aion.codegen;
 import std;
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
   using namespace aion;
 
   if (argc < 2) {
@@ -99,12 +100,19 @@ int main(int argc, char** argv) {
     compilation_context.log(1, "[Dump] NFA DOT written");
   }
 
+  if (compilation_context.diagnostics.get_error_count() > 0)
+  {
+    compilation_context.log(1, "[Session] Errors in given code. Skipping remaining steps", aion::core::RED);
+    std::exit(0);
+  }
+
+
   compilation_context.log(1, "[Codegen] Emission started");
   codegen::CEmitter emitter;
   codegen::emit_headers(emitter);
 
   compilation_context.log(2, "[Codegen] Emitting event model");
-  codegen::emit_event(ast->event, emitter);
+  codegen::emit_event(ast->event, symbol_table, emitter);
 
   compilation_context.log(2, "[Codegen] Emitting predicate evaluators");
   codegen::emit_predicates(*ast, symbol_table, emitter, compilation_context);

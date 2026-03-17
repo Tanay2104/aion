@@ -173,7 +173,9 @@ namespace aion::frontend
         // check identifier
         else if (peek().type == TokenType::IDENTIFIER)
         {
-            // Critical note: This mixes predicates with RegexRefExpr
+            // Critical note: This mixes predicates with RegexRefExpr.
+            // It is better to make something like a generic "reference"
+            // to an identifier, and resolve later.
             primary_regexpr->expr = peek().text;
         }
         else if (peek().type == TokenType::LPAREN)

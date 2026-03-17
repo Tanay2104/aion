@@ -281,7 +281,7 @@ TEST_F(E2ECompilerTests, StarRegexNfaDumpContainsNullableEpsilonNode) {
   EXPECT_NE(dot.find("\"R_eps\""), std::string::npos);
 }
 
-TEST_F(E2ECompilerTests, InvalidRegexReportsDiagnosticAndStillGeneratesOutput) {
+TEST_F(E2ECompilerTests, InvalidRegexReportsDiagnosticAndDoesNotGenerateOutput) {
   const std::filesystem::path input = fixture_file("invalid_regex_recovery.regex");
   const std::filesystem::path out_base = sandbox.file("invalid_recovery");
   const CommandResult run = run_aionc({input.string(), "-V0", "-o", out_base.string()}, sandbox.dir(),
@@ -289,7 +289,7 @@ TEST_F(E2ECompilerTests, InvalidRegexReportsDiagnosticAndStillGeneratesOutput) {
 
   EXPECT_EQ(run.exit_code, 0);
   EXPECT_NE(run.stderr_text.find("expected regular expression"), std::string::npos);
-  EXPECT_TRUE(std::filesystem::exists(out_base.string() + ".hpp"));
+  EXPECT_FALSE(std::filesystem::exists(out_base.string() + ".hpp"));
 }
 
 TEST_F(E2ECompilerTests, MissingEventReportsExpectedDiagnosticContract) {

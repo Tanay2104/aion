@@ -77,10 +77,15 @@ namespace aion::analysis
                     register_node(&regex_primary, arg);
                 }
                 else if constexpr (std::is_same_v<T, frontend::RegexWildcard>) {
-                    arg.accept(*this);
+                   arg.accept(*this);
                 }
                 else if constexpr (std::is_same_v<T, std::unique_ptr<frontend::RegexExpr>>) {
                     arg->accept(*this);
+                }
+                else
+                {
+                    ctxt.diagnostics.report_internal_error("Alphabet assignment");
+                    std::exit( 1);
                 }
 
             }, regex_primary.expr);
@@ -91,10 +96,15 @@ namespace aion::analysis
     {
         for ( const frontend::RegexDecl& regex_decl : ast.regexes)
         {
+            if (table.resolve(regex_decl.name) == nullptr || !std::holds_alternative<frontend::RegexMetadata>(table.resolve(regex_decl.name)->details)) {
+                continue;
+                // Invalid regex, was rejected for some reason early on.
+            }
             ctxt.log(2, std::format("[Alphabet] Assigning position ids for regex '{}'", regex_decl.name));
             AlphabetVisitor alphabet_visitor(table, regex_decl.name, ctxt);
             regex_decl.expr->accept(alphabet_visitor);
             const frontend::Symbol* rsymbol = table.resolve(regex_decl.name);
+
             if (rsymbol)
             {
                 const auto& meta = std::get<frontend::RegexMetadata>(rsymbol->details);
