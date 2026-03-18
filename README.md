@@ -1,7 +1,7 @@
 # Aion
 
 > **⚠️ Status: Active Development — Pre-Alpha**
-> Aion is under heavy construction. The compiler pipeline is functional for the core
+> Aion is still under construction. The compiler pipeline is functional for the core
 > subset of the language, but many features are incomplete, APIs are unstable, and
 > the benchmark suite is still synthetic-only. Expect breaking changes.
 
@@ -405,7 +405,6 @@ public interface modules are:
 - [`docs/bench.md`](docs/bench.md) - benchmark guide, methodology, and reproduction
 - [`benchmarks/results/20260313_193528/analysis.md`](benchmarks/results/20260313_193528/analysis.md) - latest dated benchmark analysis
 - [`docs/grammar.md`](docs/grammar.md) - grammar reference
-- [`docs/resources.md`](docs/resources.md) - background reading and references
 - [`docs/tests.md`](docs/tests.md) - testing notes
 - [`docs/roadmap.md`](docs/roadmap.md) - Future Work
 
